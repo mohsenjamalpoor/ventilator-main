@@ -11,13 +11,14 @@ import NotebookModal from "@/components/module/NotebookModal";
 
 export default function SimulatorPage() {
   const [isNotebookOpen, setIsNotebookOpen] = useState(false);
-  const [isLungModalOpen, setIsLungModalOpen] = useState(false); // State برای مودال ریه
+  const [isLungModalOpen, setIsLungModalOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const openNotebook = () => setIsNotebookOpen(true);
   const closeNotebook = () => setIsNotebookOpen(false);
 
-  const openLungModal = () => setIsLungModalOpen(true); // تابع باز کردن مودال ریه
-  const closeLungModal = () => setIsLungModalOpen(false); // تابع بستن مودال ریه
+  const openLungModal = () => setIsLungModalOpen(true);
+  const closeLungModal = () => setIsLungModalOpen(false);
 
   return (
     <div className="min-h-screen mt-4 bg-gray-50">
@@ -41,10 +42,12 @@ export default function SimulatorPage() {
               size={24}
               className="text-gray-600 hover:text-blue-600 cursor-pointer transition-colors"
             />
-            <IoSettingsOutline
-              size={24}
-              className="text-gray-600 hover:text-blue-600 cursor-pointer transition-colors"
-            />
+            <button onClick={() => setOpen(!open)}>
+              <IoSettingsOutline
+                size={24}
+                className="text-gray-600 hover:text-blue-600 cursor-pointer transition-colors"
+              />
+            </button>
             <LuNotebookPen
               size={24}
               className="text-gray-600 hover:text-blue-600 cursor-pointer transition-colors"
@@ -60,9 +63,16 @@ export default function SimulatorPage() {
           <p className="text-gray-600">
             محتوای شبیه‌ساز ونتیلاتور اینجا قرار می‌گیرد...
           </p>
-          {/* بقیه محتوای سیمولاتور */}
         </div>
       </div>
+      {open && (
+        <div className="absolute left-2 top-35  w-56 rounded-xl border p-3  bg-white shadow-lg">
+          <div className="border rounded-xl mb-2 p-2">Suction ETT</div>
+          <div className="border rounded-xl mb-2 p-2">Needle Decompression</div>
+          <div className="border rounded-xl mb-2 p-2">Extubate Patient</div>
+          <div className="border rounded-xl mb-2 p-2">check for ETT leak</div>
+        </div>
+      )}
 
       <NotebookModal isOpen={isNotebookOpen} onClose={closeNotebook} />
 
