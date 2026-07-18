@@ -64,9 +64,16 @@ export default function SimulatorPage() {
         />
 
         <div className="bg-white rounded-lg shadow p-8">
-          <p className="text-gray-600">
-            محتوای شبیه‌ساز ونتیلاتور اینجا قرار می‌گیرد...
-          </p>
+          <div className="flex gap-10">
+            <div></div>
+            <div>
+              <h1>Patient Select</h1>
+              <button className="border rounded-xl shadow-md p-2">child</button>
+            </div>
+            <div>
+              <h1>Mode Select</h1>
+            </div>
+          </div>
         </div>
       </div>
 
