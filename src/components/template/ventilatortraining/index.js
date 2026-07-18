@@ -11,54 +11,76 @@ const menu = [
     icon: <FaBookMedical />,
   },
   {
-    title: "Mode های ونتیلاتور",
+    title: "Mode ها",
     href: "/ventilatortraining/ventilatormode",
     icon: <FaLungs />,
   },
   {
-    title: "Alarm های ونتیلاتور",
+    title: "Alarm",
     href: "/ventilatortraining/alarm",
     icon: <FaBell />,
   },
   {
-    title: "عوارض ونتیلاتور",
+    title: "عوارض",
     href: "/ventilatortraining/complications",
     icon: <FaHeartbeat />,
   },
 ];
 
-function VentilatorTrainingSidebar() {
+export default function VentilatorTrainingSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="mr-2 w-full lg:w-72 shrink-0">
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-        <div className="bg-sky-600 p-4">
-          <h2 className="text-center text-lg font-bold text-white">
-            سرفصل‌های آموزش
-          </h2>
-        </div>
-
-        <div className="divide-y divide-gray-200">
+    <>
+      {/* Mobile */}
+      <div className="lg:hidden mb-4 overflow-x-auto rounded-xl border bg-white shadow-sm">
+        <div className="flex min-w-max p-2 gap-2">
           {menu.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-5 py-4 transition
+              className={`flex shrink-0 items-center gap-2 rounded-lg px-4 py-2 text-sm transition
                 ${
                   pathname === item.href
-                    ? "bg-sky-100 text-sky-700 font-bold border-r-4 border-sky-600"
-                    : "hover:bg-gray-50 text-gray-700"
+                    ? "bg-sky-600 text-white"
+                    : "bg-gray-100 hover:bg-sky-100"
                 }`}
             >
-              <span className="text-lg">{item.icon}</span>
-              <span>{item.title}</span>
+              {item.icon}
+              {item.title}
             </Link>
           ))}
         </div>
       </div>
-    </aside>
+
+      {/* Desktop */}
+      <aside className="hidden w-72 shrink-0 lg:block">
+        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+          <div className="bg-sky-600 p-4">
+            <h2 className="text-center text-lg font-bold text-white">
+              سرفصل‌های آموزش
+            </h2>
+          </div>
+
+          <div className="divide-y divide-gray-200">
+            {menu.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`flex items-center gap-3 px-5 py-4 transition
+                  ${
+                    pathname === item.href
+                      ? "border-r-4 border-sky-600 bg-sky-100 font-bold text-sky-700"
+                      : "text-gray-700 hover:bg-gray-50"
+                  }`}
+              >
+                <span className="text-lg">{item.icon}</span>
+                <span>{item.title}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </aside>
+    </>
   );
 }
-
-export default VentilatorTrainingSidebar;
