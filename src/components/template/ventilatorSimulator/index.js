@@ -67,7 +67,9 @@ export default function SimulatorPage() {
       </div>
       {open && (
         <div className="absolute left-2 top-35  w-56 rounded-xl border p-3  bg-white shadow-lg">
-          <div className="border rounded-xl mb-2 p-2">Suction ETT</div>
+          <div className="border rounded-xl mb-2 p-2 text-grey-500">
+            Suction ETT
+          </div>
           <div className="border rounded-xl mb-2 p-2">Needle Decompression</div>
           <div className="border rounded-xl mb-2 p-2">Extubate Patient</div>
           <div className="border rounded-xl mb-2 p-2">check for ETT leak</div>
