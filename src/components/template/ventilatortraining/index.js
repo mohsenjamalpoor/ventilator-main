@@ -2,28 +2,24 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaBookMedical, FaLungs, FaBell, FaHeartbeat } from "react-icons/fa";
+import { AiOutlineCheck } from "react-icons/ai";
 
 const menu = [
   {
     title: "مقدمه",
     href: "/ventilatortraining",
-    icon: <FaBookMedical />,
   },
   {
     title: "Mode ها",
     href: "/ventilatortraining/ventilatormode",
-    icon: <FaLungs />,
   },
   {
     title: "Alarm",
     href: "/ventilatortraining/alarm",
-    icon: <FaBell />,
   },
   {
     title: "عوارض",
     href: "/ventilatortraining/complications",
-    icon: <FaHeartbeat />,
   },
 ];
 
@@ -32,7 +28,6 @@ export default function VentilatorTrainingSidebar() {
 
   return (
     <>
-      {/* Mobile */}
       <div className="lg:hidden mb-4 overflow-x-auto rounded-xl border bg-white shadow-sm">
         <div className="flex min-w-max p-2 gap-2">
           {menu.map((item) => (
@@ -46,14 +41,13 @@ export default function VentilatorTrainingSidebar() {
                     : "bg-gray-100 hover:bg-sky-100"
                 }`}
             >
-              {item.icon}
+              <AiOutlineCheck size={20} />
               {item.title}
             </Link>
           ))}
         </div>
       </div>
 
-      {/* Desktop */}
       <aside className="hidden w-72 shrink-0 lg:block">
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
           <div className="bg-sky-600 p-4">
@@ -74,7 +68,7 @@ export default function VentilatorTrainingSidebar() {
                       : "text-gray-700 hover:bg-gray-50"
                   }`}
               >
-                <span className="text-lg">{item.icon}</span>
+                <AiOutlineCheck size={20} />
                 <span>{item.title}</span>
               </Link>
             ))}
