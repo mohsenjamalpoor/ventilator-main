@@ -127,22 +127,29 @@ const menu = [
 ];
 
 function Menu({ items }) {
+  const [openItem, setOpenItem] = useState(null);
+
   return (
     <ul className="space-y-2">
       {items.map((item) => (
-        <MenuItem key={item.title} item={item} />
+        <MenuItem
+          key={item.title}
+          item={item}
+          open={openItem === item.title}
+          onToggle={() =>
+            setOpenItem(openItem === item.title ? null : item.title)
+          }
+        />
       ))}
     </ul>
   );
 }
 
-function MenuItem({ item }) {
-  const [open, setOpen] = useState(false);
-
+function MenuItem({ item, open, onToggle }) {
   return (
     <li className="relative">
       <button
-        onClick={() => item.children && setOpen(!open)}
+        onClick={() => item.children && onToggle()}
         className={`group flex w-full items-center justify-between rounded-xl border px-4 py-3 transition-all duration-300
         ${
           open
@@ -188,7 +195,7 @@ function MenuItem({ item }) {
 export default function VentilatorTrainingSidebar() {
   return (
     <aside className="w-80 rounded-2xl mr-2 border border-gray-200 bg-white shadow-xl p-4">
-      <div className="mb-5 border-b pb-4">
+      <div className="mb-5 border-b border-slate-200 pb-4">
         <h2 className="text-xl font-bold">آموزش ونتیلاتور</h2>
 
         <p className="text-sm text-gray-500 mt-1">
