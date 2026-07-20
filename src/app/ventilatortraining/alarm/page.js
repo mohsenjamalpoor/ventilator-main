@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { FaLongArrowAltRight } from "react-icons/fa";
+
+import ProfileAlarm from "@/components/template/profileventilator/ProfileAlarm";
 
 const alarms = [
   {
@@ -20,6 +21,7 @@ const alarms = [
     slug: "apnea",
     description: "قطع تنفس بیمار",
   },
+
   {
     title: "Low Tidal Volume",
     slug: "low-volume",
@@ -31,43 +33,6 @@ const alarms = [
     description: "افزایش تعداد تنفس",
   },
 ];
-
-function ProfileContent() {
-  return (
-    <div className="bg-white rounded-2xl shadow p-6">
-      <h2 className="text-2xl font-bold text-blue-700">آلارم های ونتیلاتور</h2>
-
-      <div className="grid md:grid-cols-2 gap-4 mt-5">
-        <div className="border rounded-xl p-4">
-          <h1>Respiratory Rate (RR)</h1>
-          <span className="text-gray-500">High</span>
-          <FaLongArrowAltRight />
-          <span>RR * 2</span>
-          <p className="font-bold"></p>
-        </div>
-
-        <div className="border rounded-xl p-4">
-          <p className="text-gray-500">Peak Inspiratory Pressure(PIP)</p>
-          <p className="font-bold"> </p>
-        </div>
-
-        <div className="border rounded-xl p-4">
-          <p className="text-gray-500">Minute Ventilatiom(Ve)</p>
-          <p className="font-bold"></p>
-        </div>
-
-        <div className="border rounded-xl p-4">
-          <p className="text-gray-500"> Apnea Interval </p>
-          <p className="font-bold"></p>
-        </div>
-        <div className="border rounded-xl p-4">
-          <p className="text-gray-500"> Peep </p>
-          <p className="font-bold"></p>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default function AlarmPage() {
   const [activeTab, setActiveTab] = useState("alarm");
@@ -146,7 +111,7 @@ export default function AlarmPage() {
           ))}
         </div>
       ) : (
-        <ProfileContent />
+        <ProfileAlarm />
       )}
     </div>
   );
