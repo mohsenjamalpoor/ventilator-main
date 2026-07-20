@@ -266,8 +266,7 @@ pb-4
         <h1
           className="
 text-xl
-font-extrabold
-text-slate-800
+font-extrabol text-slate-800
 "
         >
           آموزش ونتیلاتور
