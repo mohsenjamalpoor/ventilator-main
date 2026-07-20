@@ -31,7 +31,7 @@ const injectableMedicines = [
     description: "سدیشن و حفظ فشار خون",
   },
   {
-    name: "Adrenaline",
+    name: "Epinephrine",
     description: "احیاء و شوک",
   },
 ];
