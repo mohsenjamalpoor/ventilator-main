@@ -51,7 +51,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* تصویر */}
             <div className="flex justify-center">
               <div className="relative">
                 <div className="absolute inset-0 rounded-full bg-blue-200 blur-3xl opacity-50"></div>
@@ -100,7 +99,7 @@ export default function Home() {
             <h3 className="text-xl font-bold">سناریوهای بالینی</h3>
 
             <p className="mt-3 text-gray-600 leading-8">
-              تمرین مدیریت بیماران ICU و PICU همراه با تصمیم‌گیری بالینی.
+              تمرین مدیریت بیماران PICU همراه با تصمیم‌گیری بالینی.
             </p>
           </div>
         </div>

@@ -11,7 +11,7 @@ export default function VentilatorTrainingPage() {
       <div
         className="
 rounded-3xl
-bg-gradient-to-l
+bg-linear-to-l
 from-blue-700
 to-cyan-500
 p-8
@@ -24,7 +24,7 @@ text-3xl
 font-extrabold
 "
         >
-          آموزش حرفه‌ای ونتیلاتور
+          آموزش ونتیلاتور
         </h1>
 
         <p
@@ -34,35 +34,13 @@ leading-8
 text-blue-100
 "
         >
-          یادگیری تهویه مکانیکی از مبانی تا مدیریت بیماران ICU و PICU
+          یادگیری تهویه مکانیکی از مبانی تا مدیریت بیماران PICU
         </p>
-
-        <button
-          className="
-mt-6
-flex
-items-center
-gap-2
-rounded-xl
-bg-white
-px-6
-py-3
-font-bold
-text-blue-700
-"
-        >
-          <FaPlayCircle />
-          شروع دوره
-        </button>
       </div>
 
       <div
         className="
-mt-8
-grid
-gap-5
-md:grid-cols-3
-"
+mt-8 grid gap-5 md:grid-cols-3"
       >
         <Card
           icon={<FaBookMedical />}
@@ -107,7 +85,7 @@ justify-center
 rounded-xl
 bg-blue-100
 text-2xl
-text-blue-600
+text-blue-400
 "
       >
         {icon}
