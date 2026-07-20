@@ -34,6 +34,22 @@ const injectableMedicines = [
     name: "Epinephrine",
     description: "احیاء و شوک",
   },
+  {
+    name: "Norepinephrine",
+    description: "احیاء و شوک",
+  },
+  {
+    name: "Dopamine",
+    description: "احیاء و شوک",
+  },
+
+  {
+    name: "Labetlol",
+    description: "سدیشن و حفظ فشار خون",
+  },
+  {
+    name: "Furosemide(lasix)",
+  },
 ];
 
 function MedicinePage() {
