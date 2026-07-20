@@ -57,7 +57,7 @@ function Header() {
   return (
     <>
       <header className="sticky top-0 z-50 bg-white shadow">
-        <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-5 lg:px-12">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 lg:px-12">
           <div className="flex items-center gap-8">
             <button onClick={() => setIsOpen(true)} className="md:hidden">
               <HiOutlineMenu size={28} />
@@ -75,7 +75,7 @@ function Header() {
                       href={item.href}
                       className={`transition-all duration-200 ${
                         isActive(item.href)
-                          ? "font-semibold text-blue-600"
+                          ? "font-semibold border-b-2 py-1 border-b-blue-600 text-blue-600"
                           : "text-gray-700 hover:text-blue-600"
                       }`}
                     >
@@ -97,7 +97,7 @@ function Header() {
       )}
 
       <aside
-        className={`fixed top-0 right-0 z-50 h-screen w-72 bg-white shadow-xl transition-transform duration-300 md:hidden ${
+        className={`fixed top-0 right-0 z-50 h-screen w-72 bg-white shadow-2xl transition-all duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -118,7 +118,7 @@ function Header() {
                   onClick={() => setIsOpen(false)}
                   className={`flex items-center gap-3 rounded-lg px-4 py-3 transition-all ${
                     isActive(item.href)
-                      ? "bg-green-50 font-medium text-blue-600"
+                      ? "bg-blue-50 text-blue-600 font-semibold border-r-4 border-blue-600"
                       : "hover:bg-gray-100"
                   }`}
                 >
