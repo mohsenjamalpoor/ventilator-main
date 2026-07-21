@@ -3,9 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { AiOutlineCheckCircle } from "react-icons/ai";
 import { FaBell, FaBookMedical, FaLungs, FaWaveSquare } from "react-icons/fa";
-import { LuSyringe } from "react-icons/lu";
+import { LuSyringe, LuCheck } from "react-icons/lu";
 
 const menu = [
   {
@@ -14,47 +13,74 @@ const menu = [
     icon: <FaBookMedical />,
   },
   {
-    title: "Modes of ventilation",
+    title: "حالت‌های تهویه",
     href: "/ventilatortraining/mode",
     icon: <FaLungs />,
   },
   {
-    title: "Waveforms",
+    title: "شکل موج‌ها",
     href: "/ventilatortraining/waveform",
     icon: <FaWaveSquare />,
   },
   {
-    title: "دارو ها",
+    title: "داروها",
     href: "/ventilatortraining/medicine",
     icon: <LuSyringe />,
   },
   {
-    title: "Alarm ها",
+    title: "آلارم‌ها",
     href: "/ventilatortraining/alarm",
     icon: <FaBell />,
   },
 ];
 
 export default function VentilatorTrainingSidebar() {
+  const pathname = usePathname();
+  const activeIndex = menu.findIndex((item) => item.href === pathname);
+  const currentStep = activeIndex === -1 ? 0 : activeIndex;
+
   return (
     <aside
       dir="rtl"
-      className="w-full lg:w-80 rounded-3xl border bg-white p-5 shadow-xl"
+      className="w-full lg:w-80 rounded-3xl border border-slate-200 bg-white p-5 shadow-xl"
     >
-      <header className="mb-6 border-b pb-4">
-        <h2 className="text-xl font-extrabold text-slate-800">
+      <header className="mb-6 border-b border-slate-100 pb-4">
+        <h2 className="text-xl font-extrabold text-slate-900">
           آموزش ونتیلاتور
         </h2>
-
-        <p className="mt-2 text-sm text-gray-500">
+        <p className="mt-1 text-sm text-slate-400">
           Pediatric Ventilator Academy
         </p>
+
+        <div className="mt-4">
+          <div className="flex items-center justify-between text-xs font-bold text-slate-500 mb-1.5">
+            <span>پیشرفت دوره</span>
+            <span>
+              {currentStep + 1} از {menu.length}
+            </span>
+          </div>
+          <div className="h-1.5 rounded-full bg-slate-100 overflow-hidden">
+            <div
+              className="h-full rounded-full bg-blue-600 transition-all duration-500"
+              style={{
+                width: `${((currentStep + 1) / menu.length) * 100}%`,
+              }}
+            />
+          </div>
+        </div>
       </header>
 
       <nav>
-        <ul className="space-y-3">
-          {menu.map((item) => (
-            <MenuItem key={item.href} item={item} />
+        <ul>
+          {menu.map((item, index) => (
+            <MenuItem
+              key={item.href}
+              item={item}
+              index={index}
+              isLast={index === menu.length - 1}
+              currentStep={currentStep}
+              pathname={pathname}
+            />
           ))}
         </ul>
       </nav>
@@ -62,25 +88,51 @@ export default function VentilatorTrainingSidebar() {
   );
 }
 
-function MenuItem({ item }) {
-  const pathname = usePathname();
-
+function MenuItem({ item, index, isLast, currentStep, pathname }) {
   const active = pathname === item.href;
+  const done = index < currentStep;
 
   return (
-    <li>
+    <li className="relative">
+      {!isLast && (
+        <span
+          aria-hidden="true"
+          className={`absolute right-[19px] top-10 w-0.5 h-[calc(100%-8px)] ${
+            done ? "bg-blue-500" : "bg-slate-150"
+          }`}
+          style={{ backgroundColor: done ? undefined : "#e7ebf0" }}
+        />
+      )}
+
       <Link
         href={item.href}
-        className={`flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-300
+        className={`group relative z-10 flex items-center gap-3 rounded-2xl px-3 py-3 mb-1 transition-all duration-300
           ${
             active
-              ? "bg-blue-600 text-white shadow-lg"
+              ? "bg-blue-600 text-white shadow-lg shadow-blue-600/20"
               : "text-slate-700 hover:bg-blue-50 hover:text-blue-700"
           }`}
       >
-        <span className="text-xl">{item.icon || <AiOutlineCheckCircle />}</span>
+        <span
+          className={`flex items-center justify-center w-10 h-10 rounded-full text-sm font-bold shrink-0 border-2 transition-colors
+            ${
+              active
+                ? "bg-white text-blue-600 border-white"
+                : done
+                  ? "bg-blue-600 text-white border-blue-600"
+                  : "bg-white text-slate-400 border-slate-200 group-hover:border-blue-300 group-hover:text-blue-500"
+            }`}
+        >
+          {done ? <LuCheck className="text-base" /> : item.icon}
+        </span>
 
         <span className="font-semibold">{item.title}</span>
+
+        {active && (
+          <span className="ms-auto text-xs font-bold bg-white/20 px-2 py-1 rounded-full">
+            اکنون
+          </span>
+        )}
       </Link>
     </li>
   );
