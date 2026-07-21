@@ -13,7 +13,7 @@ const menu = [
     icon: <FaBookMedical />,
   },
   {
-    title: "حالت‌های تهویه",
+    title: "Mode Ventilation",
     href: "/ventilatortraining/mode",
     icon: <FaLungs />,
   },
@@ -97,7 +97,7 @@ function MenuItem({ item, index, isLast, currentStep, pathname }) {
       {!isLast && (
         <span
           aria-hidden="true"
-          className={`absolute right-[19px] top-10 w-0.5 h-[calc(100%-8px)] ${
+          className={`absolute right-4.75 top-10 w-0.5 h-[calc(100%-8px)] ${
             done ? "bg-blue-500" : "bg-slate-150"
           }`}
           style={{ backgroundColor: done ? undefined : "#e7ebf0" }}
