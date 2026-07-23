@@ -13,6 +13,7 @@ import {
   LuActivity,
   LuChevronLeft,
 } from "react-icons/lu";
+import { FaBell } from "react-icons/fa6";
 
 const PRIORITY = {
   high: {
@@ -73,13 +74,28 @@ export default function AlarmPage() {
   return (
     <div dir="rtl" className="min-h-screen bg-slate-50 p-6">
       <header className="mb-8">
-        <p className="text-xs font-bold tracking-wide text-slate-400 font-mono uppercase mb-1">
-          Ventilator Training · Module 04
-        </p>
-        <h1 className="text-3xl font-extrabold text-slate-900">آلارم‌ها</h1>
-        <p className="mt-1 text-sm text-slate-500">
-          طبقه‌بندی بر اساس اولویت بالینی — قرمز یعنی نیاز به اقدام فوری
-        </p>
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            {/* Halo */}
+            <span className="absolute inset-0 rounded-full bg-red-500 opacity-30 animate-ping"></span>
+            <span className="absolute inset-0 rounded-full bg-red-500 blur-xl opacity-40 animate-pulse"></span>
+
+            {/* Icon */}
+            <div className="relative flex h-14 w-14 items-center justify-center rounded-full bg-red-600 text-white shadow-lg shadow-red-500/50 animate-bell">
+              <FaBell size={26} />
+            </div>
+          </div>
+
+          <div>
+            <h1 className="text-3xl font-extrabold text-slate-900">
+              آلارم‌های ونتیلاتور
+            </h1>
+
+            <p className="mt-1 text-sm text-slate-500">
+              طبقه‌بندی بر اساس اولویت بالینی — قرمز یعنی نیاز به اقدام فوری
+            </p>
+          </div>
+        </div>
       </header>
 
       <div className="relative mb-8 inline-flex w-full max-w-md rounded-2xl bg-slate-200/60 p-1">
@@ -173,6 +189,42 @@ export default function AlarmPage() {
             opacity: 1;
             transform: translateY(0);
           }
+        }
+
+        @keyframes bell {
+          0% {
+            transform: rotate(0);
+          }
+          10% {
+            transform: rotate(18deg);
+          }
+          20% {
+            transform: rotate(-18deg);
+          }
+          30% {
+            transform: rotate(15deg);
+          }
+          40% {
+            transform: rotate(-15deg);
+          }
+          50% {
+            transform: rotate(10deg);
+          }
+          60% {
+            transform: rotate(-10deg);
+          }
+          70% {
+            transform: rotate(5deg);
+          }
+          80%,
+          100% {
+            transform: rotate(0);
+          }
+        }
+
+        .animate-bell {
+          transform-origin: top center;
+          animation: bell 2s ease-in-out infinite;
         }
       `}</style>
     </div>
