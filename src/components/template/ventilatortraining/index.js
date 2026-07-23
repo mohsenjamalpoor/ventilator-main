@@ -18,7 +18,7 @@ const menu = [
     icon: <FaLungs />,
   },
   {
-    title: "شکل موج‌ها",
+    title: "Waveforms",
     href: "/ventilatortraining/waveform",
     icon: <FaWaveSquare />,
   },
@@ -51,23 +51,6 @@ export default function VentilatorTrainingSidebar() {
         <p className="mt-1 text-sm text-slate-400">
           Pediatric Ventilator Academy
         </p>
-
-        <div className="mt-4">
-          <div className="flex items-center justify-between text-xs font-bold text-slate-500 mb-1.5">
-            <span>پیشرفت دوره</span>
-            <span>
-              {currentStep + 1} از {menu.length}
-            </span>
-          </div>
-          <div className="h-1.5 rounded-full bg-slate-100 overflow-hidden">
-            <div
-              className="h-full rounded-full bg-blue-600 transition-all duration-500"
-              style={{
-                width: `${((currentStep + 1) / menu.length) * 100}%`,
-              }}
-            />
-          </div>
-        </div>
       </header>
 
       <nav>
@@ -127,12 +110,6 @@ function MenuItem({ item, index, isLast, currentStep, pathname }) {
         </span>
 
         <span className="font-semibold">{item.title}</span>
-
-        {active && (
-          <span className="ms-auto text-xs font-bold bg-white/20 px-2 py-1 rounded-full">
-            اکنون
-          </span>
-        )}
       </Link>
     </li>
   );
