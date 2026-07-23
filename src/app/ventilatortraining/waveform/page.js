@@ -21,10 +21,7 @@ export default function WaveformsPage() {
   const variant = selected.variants[activeKey];
 
   return (
-    <div
-      dir="rtl"
-      className="min-h-screen bg-[#05070C] px-4 py-8 text-slate-200"
-    >
+    <div dir="rtl" className="min-h-screen  px-4 py-8">
       <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[300px_1fr]">
         <div className="flex items-center gap-3 lg:hidden">
           <LuRadio className="text-sky-400" size={20} />
