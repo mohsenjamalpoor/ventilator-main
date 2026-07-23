@@ -25,9 +25,7 @@ export default function WaveformsPage() {
       <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[300px_1fr]">
         <div className="flex items-center gap-3 lg:hidden">
           <LuRadio className="text-sky-400" size={20} />
-          <h1 className="text-lg font-extrabold text-white">
-            پایش موج‌های ونتیلاتور
-          </h1>
+          <h1 className="text-lg font-extrabold "> waveforms</h1>
         </div>
 
         <aside className="h-fit rounded-3xl border border-slate-800/80 bg-[#0B0F17] p-4 shadow-2xl shadow-black/40 lg:sticky lg:top-8">
