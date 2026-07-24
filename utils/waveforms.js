@@ -202,7 +202,7 @@ export const waveforms = [
         expPath:
           "M250,85 C230,95 222,105 220,118 C215,145 200,175 165,198 C120,222 80,228 45,235",
         readouts: [
-          { label: "Compliance", value: "کاهش‌یافته", unit: "" },
+          { label: "Compliance", value: "کاهش‌ یافته", unit: "" },
           { label: "Beak Sign", value: "مثبت", unit: "" },
         ],
         note: "صاف‌شدگی و 'نوک اردکی' (Beak) در بالای لوپ، نشانه‌ی بیش‌اتساع آلوئولی است.",

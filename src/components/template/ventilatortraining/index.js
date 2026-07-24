@@ -13,8 +13,13 @@ const menu = [
     icon: <FaBookMedical />,
   },
   {
-    title: "Mode Ventilation",
+    title: "Modes of Ventilation",
     href: "/ventilatortraining/mode",
+    icon: <FaLungs />,
+  },
+  {
+    title: "پارمترهای ونتیلاتور",
+    href: "/ventilatortraining/parameters",
     icon: <FaLungs />,
   },
   {
