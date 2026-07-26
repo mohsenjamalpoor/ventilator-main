@@ -45,8 +45,8 @@ const menu = [
         title: "CSV",
         href: "/ventilatortraining/mode/csv",
         children: [
-          { title: "CPAP", href: "/ventilatortraining/mode/cmv/vc-ac" },
-          { title: "PSV", href: "/ventilatortraining/mode/cmv/pc-ac" },
+          { title: "CPAP", href: "/ventilatortraining/mode/csv/cpap" },
+          { title: "PSV", href: "/ventilatortraining/mode/csv/psv" },
         ],
       },
     ],
@@ -215,7 +215,9 @@ function ParentMenuItem({ item, isOpen, onToggle, pathname }) {
   );
 }
 
-// کامپوننت بازگشتی برای رندر هر تعداد سطحِ زیرمنو (مثلاً CMV -> VC-AC/PC-AC/PRVC-AC)
+// کامپوننت بازگشتی برای رندر هر تعداد سطحِ زیرمنو
+// - آیتم‌هایی که خودشون children دارن (مثل CMV, IMV, CSV): فقط باز/بسته می‌شن، به صفحه‌ای navigate نمی‌کنن
+// - آیتم‌های برگ (بدون children، مثل VC-AC): با کلیک به صفحه‌ی خودشون می‌رن
 function SubMenuItem({ item, pathname }) {
   const hasChildren = item.children && item.children.length > 0;
   const isActive = pathname === item.href;
@@ -226,29 +228,36 @@ function SubMenuItem({ item, pathname }) {
   return (
     <li>
       <div className="flex items-center">
-        <Link
-          href={item.href}
-          className={`flex-1 block rounded-xl px-3 py-2 text-sm font-medium transition-colors
-            ${
-              isActive
-                ? "bg-blue-50 text-blue-700"
-                : "text-slate-600 hover:bg-slate-50 hover:text-blue-600"
-            }`}
-        >
-          {item.title}
-        </Link>
-        {hasChildren && (
+        {hasChildren ? (
           <button
             type="button"
             onClick={() => setOpen((prev) => !prev)}
-            className="px-2 text-slate-400"
+            className={`flex-1 flex items-center justify-between rounded-xl px-3 py-2 text-sm font-medium text-right transition-colors
+              ${
+                isActiveBranch
+                  ? "bg-blue-50 text-blue-700"
+                  : "text-slate-600 hover:bg-slate-50 hover:text-blue-600"
+              }`}
           >
+            <span>{item.title}</span>
             <FaChevronDown
               className={`text-xs transition-transform duration-300 ${
                 open ? "rotate-180" : ""
               }`}
             />
           </button>
+        ) : (
+          <Link
+            href={item.href}
+            className={`flex-1 block rounded-xl px-3 py-2 text-sm font-medium transition-colors
+              ${
+                isActive
+                  ? "bg-blue-50 text-blue-700"
+                  : "text-slate-600 hover:bg-slate-50 hover:text-blue-600"
+              }`}
+          >
+            {item.title}
+          </Link>
         )}
       </div>
 
