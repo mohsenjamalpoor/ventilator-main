@@ -164,14 +164,18 @@ function FlowVolumeLoopChart({ variant, scenarioKey }) {
         className="flex items-center justify-between border-t px-6 py-3 text-xs text-slate-400"
         style={{ borderColor: `${COLOR}22` }}
       >
-        <span>حجم (ml)</span>
+        <span className="flex items-center gap-2">
+          <span className="text-slate-500">حجم (ml)</span>
+          <span className="text-slate-600">→</span>
+        </span>
         <div className="flex items-center gap-4 font-normal">
           <span className="flex items-center gap-1.5">
             <span
               className="h-[2px] w-4 rounded-full"
               style={{ backgroundColor: COLOR }}
             />
-            بازدم
+            <span>دم</span>
+            <span className="text-[10px] text-slate-500">(Insp.)</span>
           </span>
           <span className="flex items-center gap-1.5">
             <span
@@ -181,10 +185,14 @@ function FlowVolumeLoopChart({ variant, scenarioKey }) {
                 backgroundImage: `repeating-linear-gradient(90deg, ${COLOR} 0 4px, transparent 4px 8px)`,
               }}
             />
-            دم
+            <span>بازدم</span>
+            <span className="text-[10px] text-slate-500">(Exp.)</span>
           </span>
         </div>
-        <span>جریان (L/min)</span>
+        <span className="flex items-center gap-2">
+          <span className="text-slate-600">↑</span>
+          <span className="text-slate-500">جریان (L/min)</span>
+        </span>
       </div>
 
       <style>{`

@@ -72,22 +72,6 @@ function PressureTimeChart({ variant }) {
         boxShadow: `0 0 60px -20px ${COLOR}55 inset`,
       }}
     >
-      <div className="absolute right-4 top-4 flex items-center gap-2 rounded-full bg-black/40 px-3 py-1 backdrop-blur-sm">
-        <span className="relative flex h-2 w-2">
-          <span
-            className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"
-            style={{ backgroundColor: COLOR }}
-          />
-          <span
-            className="relative inline-flex h-2 w-2 rounded-full"
-            style={{ backgroundColor: COLOR }}
-          />
-        </span>
-        <span className="font-mono text-[10px] tracking-widest text-slate-300">
-          LIVE
-        </span>
-      </div>
-
       <div className="p-6 pb-4" dir="ltr">
         <svg
           viewBox={VIEWBOX}
