@@ -1,67 +1,62 @@
 "use client";
 
 import { useState } from "react";
-import { LuCircleGauge } from "react-icons/lu";
+import { LuGitCompareArrows } from "react-icons/lu";
 
-const COLOR = "#38BDF8";
-const VIEWBOX = "0 0 600 220";
-const CYCLE_WIDTH = 300;
-const BASELINE_Y = 180;
+const COLOR = "#F472B6";
+const VIEWBOX = "0 0 300 300";
 
 const SCENARIOS = [
   { key: "normal", label: "نرمال" },
   { key: "leak", label: "نشتی (Leak)" },
   { key: "obstruction", label: "انسداد راه هوایی" },
-  { key: "overdistension", label: "بیش‌اتساعی" },
 ];
 
 const VARIANTS = {
   normal: {
-    path: "M0,180 L15,180 C25,180 30,60 45,55 L70,50 L215,50 C225,50 232,90 240,140 C246,168 248,178 255,180 L300,180",
+    expPath: "M30,150 C48,62 92,42 132,46 C180,52 232,90 272,150",
+    inspPath: "M272,150 C232,192 180,212 150,212 C110,212 60,190 30,150",
     readouts: [
-      { label: "Peak Pressure", value: "28", unit: "cmH2O" },
-      { label: "Plateau", value: "22", unit: "cmH2O" },
-      { label: "PEEP", value: "5", unit: "cmH2O" },
+      { label: "Peak Exp. Flow", value: "55", unit: "L/min" },
+      { label: "Loop", value: "بسته", unit: "" },
     ],
-    note: "الگوی طبیعی موج فشار با یک Plateau صاف در انتهای دم.",
+    note: "شکل طبیعی لوپ با بازگشت کامل به نقطه‌ی شروع روی محور حجم.",
   },
   leak: {
-    path: "M0,180 L15,180 C25,180 30,65 45,60 L70,58 C120,58 170,68 215,80 C225,95 232,115 240,148 C246,168 248,178 255,180 L300,180",
+    expPath: "M30,150 C48,62 92,42 132,46 C180,52 232,90 272,150",
+    inspPath: "M272,150 C232,190 180,210 150,210 C112,210 75,195 55,150",
     readouts: [
-      { label: "Peak Pressure", value: "24", unit: "cmH2O" },
-      { label: "Plateau", value: "افت‌کننده", unit: "" },
-      { label: "PEEP", value: "5", unit: "cmH2O" },
+      { label: "Peak Exp. Flow", value: "55", unit: "L/min" },
+      { label: "Loop", value: "باز", unit: "" },
     ],
-    note: "به‌جای Plateau صاف، فشار در طول Hold افت می‌کند — نشانه‌ی نشتی از مدار یا کاف لوله.",
+    note: "لوپ روی محور حجم بسته نمی‌شود؛ حجم بازدمی کمتر از حجم دمی است — نشانه‌ی نشتی.",
   },
   obstruction: {
-    path: "M0,180 L15,180 C30,180 40,85 55,65 C75,50 95,42 110,40 L215,40 C225,42 232,90 240,140 C246,168 248,178 255,180 L300,180",
+    expPath:
+      "M30,150 C46,70 85,45 125,44 C160,44 190,60 210,90 C225,112 235,130 245,145 C255,152 262,150 272,150",
+    inspPath: "M272,150 C232,192 180,212 150,212 C110,212 60,190 30,150",
     readouts: [
-      { label: "Peak Pressure", value: "38", unit: "cmH2O" },
-      { label: "Plateau", value: "22", unit: "cmH2O" },
-      { label: "Peak-Plateau Gap", value: "بزرگ", unit: "" },
+      { label: "Peak Exp. Flow", value: "38", unit: "L/min" },
+      { label: "Coving", value: "مثبت", unit: "" },
     ],
-    note: "صعود کندتر و فاصله‌ی زیاد Peak تا Plateau نشانه‌ی افزایش مقاومت راه هوایی است.",
-  },
-  overdistension: {
-    path: "M0,180 L15,180 C25,180 30,60 45,55 L55,50 C60,44 65,28 75,28 C85,28 90,44 95,50 L215,50 C225,50 232,90 240,140 C246,168 248,178 255,180 L300,180",
-    readouts: [
-      { label: "Peak Pressure", value: "34", unit: "cmH2O" },
-      { label: "Plateau", value: "22", unit: "cmH2O" },
-      { label: "Beak Sign", value: "مثبت", unit: "" },
-    ],
-    note: "برآمدگی نوک‌تیز (Beak) در انتهای دم، نشانه‌ی بیش‌اتساع آلوئولی است.",
+    note: "فرورفتگی (Scooping/Coving) در قوس بازدمی، نشانه‌ی کلاسیک انسداد راه هوایی (COPD/آسم).",
   },
 };
 
 const CLINICAL = [
-  "بررسی Peak Pressure",
-  "تشخیص Auto PEEP",
-  "بررسی Compliance",
-  "تشخیص Airway Resistance",
+  "تشخیص Bronchospasm",
+  "تشخیص Leak",
+  "Upper Airway Obstruction",
 ];
 
-function PressureTimeChart({ variant }) {
+function stripLeadingMove(d) {
+  return d.replace(/^\s*M\s*[-\d.]+\s*,\s*[-\d.]+/, "");
+}
+
+function FlowVolumeLoopChart({ variant, scenarioKey }) {
+  const isLeakOpen = scenarioKey === "leak";
+  const inspStart = variant.inspPath.match(/M([-\d.]+),([-\d.]+)/);
+
   return (
     <div
       className="relative overflow-hidden rounded-2xl border"
@@ -72,22 +67,6 @@ function PressureTimeChart({ variant }) {
         boxShadow: `0 0 60px -20px ${COLOR}55 inset`,
       }}
     >
-      <div className="absolute right-4 top-4 flex items-center gap-2 rounded-full bg-black/40 px-3 py-1 backdrop-blur-sm">
-        <span className="relative flex h-2 w-2">
-          <span
-            className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"
-            style={{ backgroundColor: COLOR }}
-          />
-          <span
-            className="relative inline-flex h-2 w-2 rounded-full"
-            style={{ backgroundColor: COLOR }}
-          />
-        </span>
-        <span className="font-mono text-[10px] tracking-widest text-slate-300">
-          LIVE
-        </span>
-      </div>
-
       <div className="p-6 pb-4" dir="ltr">
         <svg
           viewBox={VIEWBOX}
@@ -96,7 +75,7 @@ function PressureTimeChart({ variant }) {
         >
           <defs>
             <pattern
-              id="pressuretime-grid"
+              id="fvloop-grid"
               width="30"
               height="22"
               patternUnits="userSpaceOnUse"
@@ -109,7 +88,7 @@ function PressureTimeChart({ variant }) {
               />
             </pattern>
             <filter
-              id="pressuretime-glow"
+              id="fvloop-glow"
               x="-30%"
               y="-30%"
               width="160%"
@@ -121,51 +100,63 @@ function PressureTimeChart({ variant }) {
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
-            <path id="pressuretime-cycle" d={variant.path} fill="none" />
           </defs>
 
-          <rect width="100%" height="100%" fill="url(#pressuretime-grid)" />
+          <rect width="100%" height="100%" fill="url(#fvloop-grid)" />
 
           <line
-            x1="0"
-            y1={BASELINE_Y}
-            x2="600"
-            y2={BASELINE_Y}
-            stroke="rgba(148,163,184,0.18)"
+            x1="30"
+            y1="150"
+            x2="270"
+            y2="150"
+            stroke="rgba(148,163,184,0.25)"
+            strokeDasharray="3 5"
+          />
+          <line
+            x1="150"
+            y1="30"
+            x2="150"
+            y2="270"
+            stroke="rgba(148,163,184,0.25)"
+            strokeDasharray="3 5"
           />
 
-          <g
-            className="pressuretime-scroll"
-            style={{ "--cw": `${CYCLE_WIDTH}px` }}
-          >
-            <use
-              href="#pressuretime-cycle"
-              x="0"
-              stroke={COLOR}
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              filter="url(#pressuretime-glow)"
+          <path
+            d={variant.expPath}
+            fill="none"
+            stroke={COLOR}
+            strokeWidth="3"
+            strokeLinecap="round"
+            filter="url(#fvloop-glow)"
+            className="fvloop-draw"
+          />
+          <path
+            d={variant.inspPath}
+            fill="none"
+            stroke={COLOR}
+            strokeOpacity="0.55"
+            strokeWidth="3"
+            strokeDasharray="2 6"
+            strokeLinecap="round"
+            className="fvloop-draw"
+          />
+          {isLeakOpen && inspStart && (
+            <circle
+              cx={inspStart[1]}
+              cy={inspStart[2]}
+              r="4"
+              fill="#F87171"
+              opacity="0.9"
             />
-            <use
-              href="#pressuretime-cycle"
-              x={CYCLE_WIDTH}
-              stroke={COLOR}
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              filter="url(#pressuretime-glow)"
+          )}
+
+          <circle r="5" fill={COLOR} filter="url(#fvloop-glow)">
+            <animateMotion
+              dur="2.4s"
+              repeatCount="indefinite"
+              path={`${variant.expPath} ${stripLeadingMove(variant.inspPath)}`}
             />
-            <use
-              href="#pressuretime-cycle"
-              x={CYCLE_WIDTH * 2}
-              stroke={COLOR}
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              filter="url(#pressuretime-glow)"
-            />
-          </g>
+          </circle>
         </svg>
       </div>
 
@@ -173,27 +164,47 @@ function PressureTimeChart({ variant }) {
         className="flex items-center justify-between border-t px-6 py-3 text-xs text-slate-400"
         style={{ borderColor: `${COLOR}22` }}
       >
-        <span>زمان (ثانیه)</span>
-        <span>فشار (cmH2O)</span>
+        <span>حجم (ml)</span>
+        <div className="flex items-center gap-4 font-normal">
+          <span className="flex items-center gap-1.5">
+            <span
+              className="h-[2px] w-4 rounded-full"
+              style={{ backgroundColor: COLOR }}
+            />
+            بازدم
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span
+              className="h-[2px] w-4 rounded-full opacity-50"
+              style={{
+                backgroundColor: COLOR,
+                backgroundImage: `repeating-linear-gradient(90deg, ${COLOR} 0 4px, transparent 4px 8px)`,
+              }}
+            />
+            دم
+          </span>
+        </div>
+        <span>جریان (L/min)</span>
       </div>
 
       <style>{`
-        .pressuretime-scroll {
-          animation: pressuretime-scroll-left 2.6s linear infinite;
+        .fvloop-draw {
+          stroke-dasharray: 700;
+          stroke-dashoffset: 700;
+          animation: fvloop-draw-in 1.1s ease-out forwards;
         }
-        @keyframes pressuretime-scroll-left {
-          from { transform: translateX(0); }
-          to { transform: translateX(calc(var(--cw) * -1)); }
+        @keyframes fvloop-draw-in {
+          to { stroke-dashoffset: 0; }
         }
         @media (prefers-reduced-motion: reduce) {
-          .pressuretime-scroll { animation: none; }
+          .fvloop-draw { animation: none; stroke-dashoffset: 0; }
         }
       `}</style>
     </div>
   );
 }
 
-export default function PressureTimePage() {
+export default function FlowVolumeLoopPage() {
   const [scenario, setScenario] = useState("normal");
   const variant = VARIANTS[scenario];
 
@@ -207,14 +218,14 @@ export default function PressureTimePage() {
                 className="mb-2 inline-block rounded-full px-3 py-1 font-mono text-[11px] tracking-wide"
                 style={{ backgroundColor: `${COLOR}1A`, color: COLOR }}
               >
-                TIME-BASED
+                LOOP
               </span>
               <h1 className="flex items-center gap-2 text-3xl font-black text-white md:text-4xl">
-                <LuCircleGauge style={{ color: COLOR }} size={28} />
-                فشار بر حسب زمان
+                <LuGitCompareArrows style={{ color: COLOR }} size={28} />
+                لوپ جریان-حجم
               </h1>
               <p className="mt-1 font-mono text-sm text-slate-500">
-                Pressure-Time Waveform
+                Flow-Volume Loop
               </p>
             </div>
 
@@ -242,8 +253,8 @@ export default function PressureTimePage() {
           </div>
 
           <p className="mt-6 text-lg leading-9 text-slate-400">
-            نمودار Pressure-Time تغییرات فشار راه هوایی را در طول سیکل تنفس
-            نمایش می‌دهد.
+            لوپ Flow-Volume جریان و حجم را همزمان نمایش می‌دهد و برای تشخیص
+            انسداد راه هوایی، Leak و برونکواسپاسم کاربرد دارد.
           </p>
 
           <div className="mt-6 flex flex-wrap gap-2 border-t border-slate-800/80 pt-5">
@@ -278,7 +289,11 @@ export default function PressureTimePage() {
           </div>
         </div>
 
-        <PressureTimeChart key={scenario} variant={variant} />
+        <FlowVolumeLoopChart
+          key={scenario}
+          variant={variant}
+          scenarioKey={scenario}
+        />
 
         <div className="rounded-3xl border border-slate-800/80 bg-[#0B0F17] p-6 shadow-2xl shadow-black/40 md:p-8">
           <h2 className="mb-6 text-2xl font-bold text-white">

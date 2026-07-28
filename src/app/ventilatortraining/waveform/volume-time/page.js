@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { LuCircleGauge } from "react-icons/lu";
+import { LuChartLine } from "react-icons/lu";
 
-const COLOR = "#38BDF8";
+const COLOR = "#FBBF24";
 const VIEWBOX = "0 0 600 220";
 const CYCLE_WIDTH = 300;
 const BASELINE_Y = 180;
@@ -12,56 +12,40 @@ const SCENARIOS = [
   { key: "normal", label: "نرمال" },
   { key: "leak", label: "نشتی (Leak)" },
   { key: "obstruction", label: "انسداد راه هوایی" },
-  { key: "overdistension", label: "بیش‌اتساعی" },
 ];
 
 const VARIANTS = {
   normal: {
-    path: "M0,180 L15,180 C25,180 30,60 45,55 L70,50 L215,50 C225,50 232,90 240,140 C246,168 248,178 255,180 L300,180",
+    path: "M0,180 C20,180 50,70 90,55 L170,52 C185,52 190,60 195,75 C220,140 250,175 280,180 L300,180",
     readouts: [
-      { label: "Peak Pressure", value: "28", unit: "cmH2O" },
-      { label: "Plateau", value: "22", unit: "cmH2O" },
-      { label: "PEEP", value: "5", unit: "cmH2O" },
+      { label: "Tidal Volume", value: "450", unit: "ml" },
+      { label: "Minute Volume", value: "6.3", unit: "L" },
     ],
-    note: "الگوی طبیعی موج فشار با یک Plateau صاف در انتهای دم.",
+    note: "بازگشت کامل حجم به خط پایه‌ی صفر پس از هر بازدم.",
   },
   leak: {
-    path: "M0,180 L15,180 C25,180 30,65 45,60 L70,58 C120,58 170,68 215,80 C225,95 232,115 240,148 C246,168 248,178 255,180 L300,180",
+    path: "M0,160 C20,160 50,62 90,50 L170,48 C183,48 188,55 193,68 C213,105 240,140 265,155 L300,160",
     readouts: [
-      { label: "Peak Pressure", value: "24", unit: "cmH2O" },
-      { label: "Plateau", value: "افت‌کننده", unit: "" },
-      { label: "PEEP", value: "5", unit: "cmH2O" },
+      { label: "Exhaled Vt", value: "380", unit: "ml" },
+      { label: "Set Vt", value: "450", unit: "ml" },
+      { label: "Diff", value: "-70", unit: "ml" },
     ],
-    note: "به‌جای Plateau صاف، فشار در طول Hold افت می‌کند — نشانه‌ی نشتی از مدار یا کاف لوله.",
+    note: "حجم بازدمی هرگز به صفر بازنمی‌گردد؛ اختلاف حجم دمی و بازدمی نشانه‌ی نشتی است.",
   },
   obstruction: {
-    path: "M0,180 L15,180 C30,180 40,85 55,65 C75,50 95,42 110,40 L215,40 C225,42 232,90 240,140 C246,168 248,178 255,180 L300,180",
+    path: "M0,172 C20,172 50,66 90,52 L170,50 C184,50 189,57 194,71 C216,120 246,158 272,168 L300,172",
     readouts: [
-      { label: "Peak Pressure", value: "38", unit: "cmH2O" },
-      { label: "Plateau", value: "22", unit: "cmH2O" },
-      { label: "Peak-Plateau Gap", value: "بزرگ", unit: "" },
+      { label: "Exhaled Vt", value: "430", unit: "ml" },
+      { label: "Set Vt", value: "450", unit: "ml" },
+      { label: "Diff", value: "-20", unit: "ml" },
     ],
-    note: "صعود کندتر و فاصله‌ی زیاد Peak تا Plateau نشانه‌ی افزایش مقاومت راه هوایی است.",
-  },
-  overdistension: {
-    path: "M0,180 L15,180 C25,180 30,60 45,55 L55,50 C60,44 65,28 75,28 C85,28 90,44 95,50 L215,50 C225,50 232,90 240,140 C246,168 248,178 255,180 L300,180",
-    readouts: [
-      { label: "Peak Pressure", value: "34", unit: "cmH2O" },
-      { label: "Plateau", value: "22", unit: "cmH2O" },
-      { label: "Beak Sign", value: "مثبت", unit: "" },
-    ],
-    note: "برآمدگی نوک‌تیز (Beak) در انتهای دم، نشانه‌ی بیش‌اتساع آلوئولی است.",
+    note: "بازگشت ناقص حجم به دلیل بازدم ناکامل و احتباس هوا (Air Trapping).",
   },
 };
 
-const CLINICAL = [
-  "بررسی Peak Pressure",
-  "تشخیص Auto PEEP",
-  "بررسی Compliance",
-  "تشخیص Airway Resistance",
-];
+const CLINICAL = ["تشخیص Leak", "بررسی Tidal Volume", "کنترل بازدم کامل"];
 
-function PressureTimeChart({ variant }) {
+function VolumeTimeChart({ variant }) {
   return (
     <div
       className="relative overflow-hidden rounded-2xl border"
@@ -96,7 +80,7 @@ function PressureTimeChart({ variant }) {
         >
           <defs>
             <pattern
-              id="pressuretime-grid"
+              id="volumetime-grid"
               width="30"
               height="22"
               patternUnits="userSpaceOnUse"
@@ -109,7 +93,7 @@ function PressureTimeChart({ variant }) {
               />
             </pattern>
             <filter
-              id="pressuretime-glow"
+              id="volumetime-glow"
               x="-30%"
               y="-30%"
               width="160%"
@@ -121,10 +105,10 @@ function PressureTimeChart({ variant }) {
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
-            <path id="pressuretime-cycle" d={variant.path} fill="none" />
+            <path id="volumetime-cycle" d={variant.path} fill="none" />
           </defs>
 
-          <rect width="100%" height="100%" fill="url(#pressuretime-grid)" />
+          <rect width="100%" height="100%" fill="url(#volumetime-grid)" />
 
           <line
             x1="0"
@@ -135,35 +119,35 @@ function PressureTimeChart({ variant }) {
           />
 
           <g
-            className="pressuretime-scroll"
+            className="volumetime-scroll"
             style={{ "--cw": `${CYCLE_WIDTH}px` }}
           >
             <use
-              href="#pressuretime-cycle"
+              href="#volumetime-cycle"
               x="0"
               stroke={COLOR}
               strokeWidth="3"
               strokeLinecap="round"
               strokeLinejoin="round"
-              filter="url(#pressuretime-glow)"
+              filter="url(#volumetime-glow)"
             />
             <use
-              href="#pressuretime-cycle"
+              href="#volumetime-cycle"
               x={CYCLE_WIDTH}
               stroke={COLOR}
               strokeWidth="3"
               strokeLinecap="round"
               strokeLinejoin="round"
-              filter="url(#pressuretime-glow)"
+              filter="url(#volumetime-glow)"
             />
             <use
-              href="#pressuretime-cycle"
+              href="#volumetime-cycle"
               x={CYCLE_WIDTH * 2}
               stroke={COLOR}
               strokeWidth="3"
               strokeLinecap="round"
               strokeLinejoin="round"
-              filter="url(#pressuretime-glow)"
+              filter="url(#volumetime-glow)"
             />
           </g>
         </svg>
@@ -174,26 +158,26 @@ function PressureTimeChart({ variant }) {
         style={{ borderColor: `${COLOR}22` }}
       >
         <span>زمان (ثانیه)</span>
-        <span>فشار (cmH2O)</span>
+        <span>حجم (ml)</span>
       </div>
 
       <style>{`
-        .pressuretime-scroll {
-          animation: pressuretime-scroll-left 2.6s linear infinite;
+        .volumetime-scroll {
+          animation: volumetime-scroll-left 2.6s linear infinite;
         }
-        @keyframes pressuretime-scroll-left {
+        @keyframes volumetime-scroll-left {
           from { transform: translateX(0); }
           to { transform: translateX(calc(var(--cw) * -1)); }
         }
         @media (prefers-reduced-motion: reduce) {
-          .pressuretime-scroll { animation: none; }
+          .volumetime-scroll { animation: none; }
         }
       `}</style>
     </div>
   );
 }
 
-export default function PressureTimePage() {
+export default function VolumeTimePage() {
   const [scenario, setScenario] = useState("normal");
   const variant = VARIANTS[scenario];
 
@@ -210,11 +194,11 @@ export default function PressureTimePage() {
                 TIME-BASED
               </span>
               <h1 className="flex items-center gap-2 text-3xl font-black text-white md:text-4xl">
-                <LuCircleGauge style={{ color: COLOR }} size={28} />
-                فشار بر حسب زمان
+                <LuChartLine style={{ color: COLOR }} size={28} />
+                حجم بر حسب زمان
               </h1>
               <p className="mt-1 font-mono text-sm text-slate-500">
-                Pressure-Time Waveform
+                Volume-Time Waveform
               </p>
             </div>
 
@@ -242,8 +226,8 @@ export default function PressureTimePage() {
           </div>
 
           <p className="mt-6 text-lg leading-9 text-slate-400">
-            نمودار Pressure-Time تغییرات فشار راه هوایی را در طول سیکل تنفس
-            نمایش می‌دهد.
+            این موج حجم جاری را در طول دم و بازدم نمایش می‌دهد و برای بررسی نشتی
+            مدار و برگشت کامل حجم به صفر استفاده می‌شود.
           </p>
 
           <div className="mt-6 flex flex-wrap gap-2 border-t border-slate-800/80 pt-5">
@@ -278,7 +262,7 @@ export default function PressureTimePage() {
           </div>
         </div>
 
-        <PressureTimeChart key={scenario} variant={variant} />
+        <VolumeTimeChart key={scenario} variant={variant} />
 
         <div className="rounded-3xl border border-slate-800/80 bg-[#0B0F17] p-6 shadow-2xl shadow-black/40 md:p-8">
           <h2 className="mb-6 text-2xl font-bold text-white">

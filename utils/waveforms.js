@@ -74,12 +74,13 @@ export const waveforms = [
     icon: LuWaves,
     color: "#34D399",
     description:
-      "نمودار Flow-Time جریان دم و بازدم را نشان می‌دهد و برای تشخیص Air Trapping و Auto PEEP کاربرد دارد.",
+      "نمودار Flow-Time جریان دم و بازدم را نشان می‌دهد و برای تشخیص Air Trapping، نشتی و بیش‌اتساعی آلوئولی کاربرد دارد.",
     clinical: [
       "تشخیص Auto PEEP",
       "بررسی کامل شدن بازدم",
       "تشخیص Air Leak",
       "بررسی Trigger",
+      "تشخیص Overdistension",
     ],
     isLoop: false,
     viewBox: "0 0 600 220",
@@ -112,6 +113,15 @@ export const waveforms = [
           { label: "Rate", value: "14", unit: "/min" },
         ],
         note: "تخلیه‌ی کند و ناقص بازدمی پیش از شروع دم بعدی — بیانگر Air Trapping / Auto-PEEP است.",
+      },
+      overdistension: {
+        path: "M0,110 C8,110 15,42 30,38 C55,34 85,45 110,65 C125,80 132,95 138,108 L182,108 C185,170 195,185 205,180 C225,168 245,140 270,120 C285,108 292,110 300,110",
+        readouts: [
+          { label: "Peak Flow", value: "60", unit: "L/min" },
+          { label: "Zero-Flow Period", value: "طولانی", unit: "" },
+          { label: "Rate", value: "14", unit: "/min" },
+        ],
+        note: "جریان دمی پیش از پایان زمان دم تنظیم‌شده به صفر می‌رسد و برای بقیه‌ی آن مدت صاف باقی می‌ماند — نشانه‌ی رسیدن ریه به سقف اتساع (Overdistension) است؛ ادامه‌ی دم دیگر حجم مؤثری وارد نمی‌کند.",
       },
     },
     xAxisLabel: "زمان (ثانیه)",

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useId } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -15,13 +15,13 @@ const menu = [
   {
     title: "مقدمه",
     href: "/ventilatortraining",
-    icon: <FaBookMedical />,
+    icon: <FaBookMedical size={16} />,
     children: [{ title: "معرفی دستگاه", href: "/ventilatortraining" }],
   },
   {
     title: "Modes of Ventilation",
     href: "/ventilatortraining/mode",
-    icon: <FaLungs />,
+    icon: <FaLungs size={16} />,
     children: [
       {
         title: "CMV",
@@ -54,7 +54,7 @@ const menu = [
   {
     title: "پارامترهای ونتیلاتور",
     href: "/ventilatortraining/parameters",
-    icon: <FaLungs />,
+    icon: <FaLungs size={16} />,
     children: [
       { title: "VT", href: "/ventilatortraining/parameters/vt" },
       { title: "RR", href: "/ventilatortraining/parameters/rr" },
@@ -73,7 +73,7 @@ const menu = [
   {
     title: "Waveforms",
     href: "/ventilatortraining/waveform",
-    icon: <FaWaveSquare />,
+    icon: <FaWaveSquare size={16} />,
     children: [
       {
         title: "Pressure-Time",
@@ -85,25 +85,187 @@ const menu = [
         href: "/ventilatortraining/waveform/volume-time",
       },
       { title: "PV Loop", href: "/ventilatortraining/waveform/pv-loop" },
-      { title: "Flow-Volume Loop", href: "/ventilatortraining/waveform" },
+
+      {
+        title: "Flow-Volume Loop",
+        href: "/ventilatortraining/waveform/flow-volume-loop",
+      },
     ],
   },
   {
     title: "داروها",
     href: "/ventilatortraining/medicine",
-    icon: <LuSyringe />,
+    icon: <LuSyringe size={16} />,
     children: [
-      { title: "لیست داروها", href: "/ventilatortraining/medicine" },
       {
-        title: "محاسبه سرعت انفوزیون",
-        href: "/ventilatortraining/medicine/dripcalculator",
+        title: "Sedation & Analgesia",
+        href: "/ventilatortraining/medicine/sedation",
+        children: [
+          {
+            title: "Midazolam",
+            href: "/ventilatortraining/medicine/sedation/midazolam",
+          },
+          {
+            title: "Ketamine",
+            href: "/ventilatortraining/medicine/sedation/ketamine",
+          },
+          {
+            title: "Propofol",
+            href: "/ventilatortraining/medicine/sedation/propofol",
+          },
+          {
+            title: "Dexmedetomidine",
+            href: "/ventilatortraining/medicine/sedation/dexmedetomidine",
+          },
+          {
+            title: "Fentanyl",
+            href: "/ventilatortraining/medicine/sedation/fentanyl",
+          },
+          {
+            title: "Morphine",
+            href: "/ventilatortraining/medicine/sedation/morphine",
+          },
+        ],
+      },
+
+      {
+        title: "Neuromuscular Blockers",
+        href: "/ventilatortraining/medicine/nmba",
+        children: [
+          {
+            title: "Rocuronium",
+            href: "/ventilatortraining/medicine/nmba/rocuronium",
+          },
+          {
+            title: "Vecuronium",
+            href: "/ventilatortraining/medicine/nmba/vecuronium",
+          },
+          {
+            title: "Atracurium",
+            href: "/ventilatortraining/medicine/nmba/atracurium",
+          },
+        ],
+      },
+      {
+        title: "Cardiovascular Drugs",
+        href: "/ventilatortraining/medicine/cardiovascular",
+        children: [
+          {
+            title: "Inotropes",
+            href: "/ventilatortraining/medicine/cardiovascular/inotropes",
+            children: [
+              {
+                title: "Dopamine",
+                href: "/ventilatortraining/medicine/cardiovascular/inotropes/dopamine",
+              },
+              {
+                title: "Dobutamine",
+                href: "/ventilatortraining/medicine/cardiovascular/inotropes/dobutamine",
+              },
+              {
+                title: "Milrinone",
+                href: "/ventilatortraining/medicine/cardiovascular/inotropes/milrinone",
+              },
+            ],
+          },
+          {
+            title: "Vasopressors",
+            href: "/ventilatortraining/medicine/cardiovascular/vasopressors",
+            children: [
+              {
+                title: "Epinephrine",
+                href: "/ventilatortraining/medicine/cardiovascular/vasopressors/epinephrine",
+              },
+              {
+                title: "Norepinephrine",
+                href: "/ventilatortraining/medicine/cardiovascular/vasopressors/norepinephrine",
+              },
+              {
+                title: "Vasopressin",
+                href: "/ventilatortraining/medicine/cardiovascular/vasopressors/vasopressin",
+              },
+            ],
+          },
+          {
+            title: "Antihypertensives",
+            href: "/ventilatortraining/medicine/cardiovascular/antihypertensives",
+            children: [
+              {
+                title: "Labetalol",
+                href: "/ventilatortraining/medicine/cardiovascular/antihypertensives/labetalol",
+              },
+              {
+                title: "Nicardipine",
+                href: "/ventilatortraining/medicine/cardiovascular/antihypertensives/nicardipine",
+              },
+              {
+                title: "Hydralazine",
+                href: "/ventilatortraining/medicine/cardiovascular/antihypertensives/hydralazine",
+              },
+              {
+                title: "Esmolol",
+                href: "/ventilatortraining/medicine/cardiovascular/antihypertensives/esmolol",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Diuretics",
+        href: "/ventilatortraining/medicine/diuretics",
+        children: [
+          {
+            title: "Furosemide",
+            href: "/ventilatortraining/medicine/diuretics/furosemide",
+          },
+          {
+            title: "Spironolactone",
+            href: "/ventilatortraining/medicine/diuretics/spironolactone",
+          },
+        ],
+      },
+      {
+        title: "Emergency Drugs",
+        href: "/ventilatortraining/medicine/emergency",
+        children: [
+          {
+            title: "Atropine",
+            href: "/ventilatortraining/medicine/emergency/atropine",
+          },
+          {
+            title: "Adenosine",
+            href: "/ventilatortraining/medicine/emergency/adenosine",
+          },
+          {
+            title: "Calcium Gluconate",
+            href: "/ventilatortraining/medicine/emergency/calcium-gluconate",
+          },
+          {
+            title: "Sodium Bicarbonate",
+            href: "/ventilatortraining/medicine/emergency/sodium-bicarbonate",
+          },
+        ],
+      },
+      {
+        title: "محاسبه‌گرها",
+        href: "/ventilatortraining/medicine/calculators",
+        children: [
+          {
+            title: "محاسبه سرعت انفوزیون",
+            href: "/ventilatortraining/medicine/dripcalculator",
+          },
+          {
+            title: "محاسبه دوز بر اساس وزن",
+            href: "/ventilatortraining/medicine/dosecalculator",
+          },
+        ],
       },
     ],
   },
   {
     title: "آلارم‌ها",
     href: "/ventilatortraining/alarm",
-    icon: <FaBell />,
+    icon: <FaBell size={16} />,
     children: [{ title: "لیست آلارم‌ها", href: "/ventilatortraining/alarm" }],
   },
 ];
@@ -120,13 +282,10 @@ function containsActivePath(item, pathname) {
 export default function VentilatorTrainingSidebar() {
   const pathname = usePathname();
 
-  const activeParentIndex = menu.findIndex((item) =>
-    containsActivePath(item, pathname),
-  );
-
-  const [openIndex, setOpenIndex] = useState(
-    activeParentIndex === -1 ? 0 : activeParentIndex,
-  );
+  const [openIndex, setOpenIndex] = useState(() => {
+    const idx = menu.findIndex((item) => containsActivePath(item, pathname));
+    return idx === -1 ? 0 : idx;
+  });
 
   const toggle = (index) => {
     setOpenIndex((prev) => (prev === index ? null : index));
@@ -145,7 +304,7 @@ export default function VentilatorTrainingSidebar() {
           Pediatric Ventilator Academy
         </p>
       </header>
-      <nav>
+      <nav aria-label="منوی آموزش ونتیلاتور">
         <ul className="space-y-1">
           {menu.map((item, index) => (
             <ParentMenuItem
@@ -165,12 +324,15 @@ export default function VentilatorTrainingSidebar() {
 function ParentMenuItem({ item, isOpen, onToggle, pathname }) {
   const hasChildren = item.children && item.children.length > 0;
   const isActiveParent = containsActivePath(item, pathname);
+  const panelId = useId();
 
   return (
     <li>
       <button
         type="button"
         onClick={onToggle}
+        aria-expanded={hasChildren ? isOpen : undefined}
+        aria-controls={hasChildren ? panelId : undefined}
         className={`group flex w-full items-center gap-3 rounded-2xl px-3 py-3 transition-all duration-300
           ${
             isActiveParent
@@ -200,8 +362,9 @@ function ParentMenuItem({ item, isOpen, onToggle, pathname }) {
 
       {hasChildren && (
         <div
+          id={panelId}
           className={`overflow-hidden transition-all duration-300 ease-in-out ${
-            isOpen ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
+            isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
           }`}
         >
           <ul className="mr-5 mt-1 space-y-1 border-r-2 border-slate-100 pr-4">
@@ -222,6 +385,7 @@ function SubMenuItem({ item, pathname }) {
   const hasChildren = item.children && item.children.length > 0;
   const isActive = pathname === item.href;
   const isActiveBranch = containsActivePath(item, pathname);
+  const panelId = useId();
 
   const [open, setOpen] = useState(isActiveBranch);
 
@@ -232,6 +396,8 @@ function SubMenuItem({ item, pathname }) {
           <button
             type="button"
             onClick={() => setOpen((prev) => !prev)}
+            aria-expanded={open}
+            aria-controls={panelId}
             className={`flex-1 flex items-center justify-between rounded-xl px-3 py-2 text-sm font-medium text-right transition-colors
               ${
                 isActiveBranch
@@ -249,6 +415,7 @@ function SubMenuItem({ item, pathname }) {
         ) : (
           <Link
             href={item.href}
+            aria-current={isActive ? "page" : undefined}
             className={`flex-1 block rounded-xl px-3 py-2 text-sm font-medium transition-colors
               ${
                 isActive
@@ -263,8 +430,9 @@ function SubMenuItem({ item, pathname }) {
 
       {hasChildren && (
         <div
+          id={panelId}
           className={`overflow-hidden transition-all duration-300 ease-in-out ${
-            open ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+            open ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
           }`}
         >
           <ul className="mr-4 mt-1 space-y-1 border-r-2 border-slate-100 pr-3">
