@@ -149,7 +149,7 @@ export default function PediatricTidalVolumeCalculator() {
   return (
     <div dir="rtl" className="min-h-screen bg-slate-50 text-slate-800">
       {/* Header */}
-      <div className="bg-gradient-to-l from-sky-600 to-teal-700 text-white">
+      <div className="bg-gradient-to-l from-sky-600 to-teal-700 rounded-lg text-white">
         <div className="max-w-5xl mx-auto px-6 py-9">
           <div className="flex items-center gap-3 mb-3">
             <div className="bg-white/15 p-2.5 rounded-xl">
@@ -160,7 +160,7 @@ export default function PediatricTidalVolumeCalculator() {
             </span>
           </div>
           <h1 className="text-3xl font-bold mb-3">حجم جاری در کودکان</h1>
-          <div className="bg-white/10 rounded-xl px-5 py-3.5 font-mono text-sm text-sky-50 inline-block">
+          <div className="bg-white/10 rounded-xl px-4 py-3.5 font-mono text-xs sm:text-sm text-sky-50 break-words">
             V<sub>T</sub> = وزن واقعی (kg) × mL/kg اختصاصی بیماری
           </div>
         </div>
@@ -198,7 +198,7 @@ export default function PediatricTidalVolumeCalculator() {
               <div className="grid sm:grid-cols-2 gap-5">
                 <div>
                   <label className="text-sm font-medium text-slate-600 mb-2 block">
-                    وزن واقعی (کیلوگرم)
+                    وزن (کیلوگرم)
                   </label>
                   <input
                     type="number"
