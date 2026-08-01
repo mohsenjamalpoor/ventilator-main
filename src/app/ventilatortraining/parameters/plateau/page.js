@@ -144,10 +144,6 @@ const TARGETS = [
   },
 ];
 
-// ---------------------------------------------------------------------
-// Small building blocks
-// ---------------------------------------------------------------------
-
 function InspiratoryHoldWaveform() {
   return (
     <svg viewBox="0 0 480 170" className="w-full h-auto">
@@ -229,10 +225,6 @@ function InspiratoryHoldWaveform() {
   );
 }
 
-// ---------------------------------------------------------------------
-// Main page
-// ---------------------------------------------------------------------
-
 export default function PlateauPage() {
   const [activeParam, setActiveParam] = useState("plateau");
   const detail = DETAILS[activeParam];
@@ -241,7 +233,7 @@ export default function PlateauPage() {
   return (
     <div
       dir="rtl"
-      className="min-h-screen px-4 py-8 bg-gradient-to-br from-slate-50 via-white to-indigo-50"
+      className="min-h-screen px-4 py-8 bg-linear-to-br from-slate-50 via-white to-indigo-50"
     >
       <div className="mx-auto max-w-5xl space-y-6">
         {/* Header */}
@@ -489,7 +481,7 @@ export default function PlateauPage() {
         </div>
 
         {/* Quick teaching */}
-        <div className="rounded-3xl border border-slate-200 bg-gradient-to-br from-indigo-50/80 to-slate-50/80 p-6 shadow-lg shadow-slate-200/60 md:p-8">
+        <div className="rounded-3xl border border-slate-200 bg-linear-to-br from-indigo-50/80 to-slate-50/80 p-6 shadow-lg shadow-slate-200/60 md:p-8">
           <div className="mb-6 flex items-center gap-3">
             <LuBookOpen style={{ color: COLOR }} size={20} />
             <h2 className="text-xl font-bold text-slate-800">
