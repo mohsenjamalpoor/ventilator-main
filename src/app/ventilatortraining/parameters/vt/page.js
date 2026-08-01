@@ -173,8 +173,8 @@ export default function PediatricTidalVolumeCalculator() {
             </div>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-4 sm:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm text-sky-50 break-words max-w-full">
-            V<sub>T</sub> = وزن (kg) × mL/kg اختصاصی بیماری
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-4 sm:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm text-sky-50 wrap-break-word max-w-full">
+            V<sub>T</sub> = وزن (kg) × mL/kg براساس بیماری
           </div>
         </div>
       </div>
