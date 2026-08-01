@@ -155,10 +155,10 @@ export default function PediatricTidalVolumeCalculator() {
   return (
     <div
       dir="rtl"
-      className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100/80 text-slate-800"
+      className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100/80 text-slate-800"
     >
       {/* Header */}
-      <div className="bg-gradient-to-l from-sky-600 to-teal-700 rounded-[2rem] md:rounded-[3rem] shadow-xl">
+      <div className="bg-linear-to-l from-sky-600 to-teal-700 rounded-4xl md:rounded-[3rem] shadow-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 lg:py-16">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-4">
             <div className="flex items-center gap-3">
@@ -415,7 +415,7 @@ export default function PediatricTidalVolumeCalculator() {
         </div>
 
         {/* نکته کلیدی - ریسپانسیو */}
-        <section className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-6 md:p-8 text-white shadow-xl">
+        <section className="bg-linear-to-br from-slate-800 to-slate-900 rounded-3xl p-6 md:p-8 text-white shadow-xl">
           <div className="flex items-center gap-3 mb-4">
             <div className="p-2 bg-sky-500/20 rounded-xl">
               <LuStethoscope size={22} className="text-sky-400" />
