@@ -29,13 +29,13 @@ const COLOR_INFO = "#2563EB"; // sky — measurement / reference
 const PARAMS = [
   {
     id: "plateau",
-    label: "فشار پلاتو (Plateau Pressure)",
+    label: "Plateau Pressure",
     desc: "فشار استاتیک آلوئولی در پایان دم",
     icon: <LuGauge size={20} />,
   },
   {
     id: "driving",
-    label: "فشار درایوینگ (Driving Pressure)",
+    label: "Driving Pressure",
     desc: "پلاتو منهای PEEP؛ فشار مؤثر بر واحد کامپلیانس",
     icon: <LuActivity size={20} />,
   },
@@ -248,12 +248,6 @@ export default function PlateauPage() {
         <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-lg shadow-slate-200/60 md:p-8">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
-              <span
-                className="mb-2 inline-block rounded-full px-3 py-1 font-mono text-[11px] tracking-wide text-indigo-600"
-                style={{ backgroundColor: `${COLOR}15` }}
-              >
-                PEDIATRIC MECHANICAL VENTILATION
-              </span>
               <h1 className="flex items-center gap-3 text-3xl font-black text-slate-800 md:text-4xl">
                 <LuGauge style={{ color: COLOR }} size={28} />
                 فشار پلاتو

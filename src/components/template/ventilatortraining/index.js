@@ -16,7 +16,7 @@ const menu = [
     title: "مقدمه",
     href: "/ventilatortraining",
     icon: <FaBookMedical size={16} />,
-    children: [{ title: "معرفی دستگاه", href: "/ventilatortraining" }],
+    children: [{ title: "مقدمه", href: "/ventilatortraining" }],
   },
   {
     title: "Modes of Ventilation",

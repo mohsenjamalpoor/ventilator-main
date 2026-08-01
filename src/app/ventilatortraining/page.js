@@ -15,6 +15,12 @@ const topics = [
   },
   {
     step: "۰۳",
+    icon: <FaLungs />,
+    title: "پارامتر های ونتیلاتور",
+    text: "VT، RR، PEEP، PIP و غیره",
+  },
+  {
+    step: "۰۴",
     icon: <FaChartLine />,
     title: "Waveform",
     text: "تحلیل منحنی فشار، جریان و حجم",
