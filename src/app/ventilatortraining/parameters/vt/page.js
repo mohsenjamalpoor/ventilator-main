@@ -260,7 +260,7 @@ export default function PediatricTidalVolumeCalculator() {
             <section className="bg-white rounded-2xl border border-slate-200 p-6">
               <h2 className="flex items-center gap-2 text-base font-bold mb-5">
                 <LuStethoscope size={18} className="text-sky-600" />
-                فنوتیپ بالینی
+                بالینی
               </h2>
               <div className="space-y-2.5">
                 {DISEASES.map((d) => {
@@ -315,18 +315,19 @@ export default function PediatricTidalVolumeCalculator() {
                       <span className="text-lg font-normal mr-1">mL</span>
                     </div>
                     <div className="text-sm opacity-90 mb-4">
-                      مقدار میانه: {result.mid} mL
+                      مقدار میانه : {result.mid} mL
                     </div>
                     <div className="h-px bg-white/20 my-4" />
                     <div className="text-sm opacity-90 leading-6 mb-3">
                       {weightNum} کیلوگرم × {disease.range[0]} تا{" "}
                       {disease.range[1]} mL/kg
                     </div>
-                    <div className="bg-white/10 rounded-xl px-3 py-2.5 text-xs">
-                      سقف Pplateau هدف:{" "}
+                    <div className="bg-white/10 rounded-xl px-3 py-3 text-xs">
+                      سقف Pplateau هدف:
                       <span className="font-bold">
                         {disease.plateauMax} cmH2O
                       </span>
+                      <br />
                       <br />
                       حداکثر Driving Pressure قابل‌قبول با این PEEP:{" "}
                       <span className="font-bold">{result.dpMax} cmH2O</span>
