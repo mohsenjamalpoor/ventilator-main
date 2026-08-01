@@ -106,19 +106,17 @@ export default function RespiratoryRatePage() {
   return (
     <div dir="rtl" className="min-h-screen bg-slate-50 text-slate-800">
       {/* Header */}
-      <div className="bg-gradient-to-l from-indigo-600 to-blue-700 text-white">
+      <div className="bg-linear-to-l from-indigo-600 to-blue-700 rounded-2xl text-white">
         <div className="max-w-4xl mx-auto px-6 py-9">
           <div className="flex items-center gap-3 mb-3">
             <div className="bg-white/15 p-2.5 rounded-xl">
               <LuWind size={24} />
             </div>
-            <span className="text-indigo-100 text-sm font-medium tracking-wide">
-              پارامتر ونتیلاتور · تهویه
-            </span>
+            <h1 className="text-3xl font-bold mb-3">
+              تعداد تنفس و تهویه آلوئولار
+            </h1>
           </div>
-          <h1 className="text-3xl font-bold mb-3">
-            تعداد تنفس و تهویه آلوئولار
-          </h1>
+
           <div className="bg-white/10 rounded-xl px-5 py-3.5 font-mono text-sm text-indigo-50 inline-block">
             V<sub>A</sub> = RR × (V<sub>T</sub> − V<sub>D</sub>)
           </div>
@@ -335,7 +333,7 @@ export default function RespiratoryRatePage() {
         <section className="bg-slate-800 rounded-2xl p-6 text-white">
           <div className="flex items-center gap-2 mb-3">
             <LuStethoscope size={20} className="text-indigo-400" />
-            <h2 className="text-lg font-bold">نکته‌ی کلیدی برای فراگیر</h2>
+            <h2 className="text-lg font-bold">نکات کلیدی </h2>
           </div>
           <p className="text-sm leading-7 text-slate-200">
             در بیماری انسدادی (آسم، برونشیولیت)، هدف تنظیم RR{" "}
