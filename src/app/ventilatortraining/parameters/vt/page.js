@@ -69,6 +69,7 @@ const ACCENT = {
     text: "text-teal-700",
     solid: "bg-teal-600",
     badge: "bg-teal-100 text-teal-700",
+    hover: "hover:bg-teal-50",
   },
   rose: {
     border: "border-rose-500",
@@ -76,6 +77,7 @@ const ACCENT = {
     text: "text-rose-700",
     solid: "bg-rose-600",
     badge: "bg-rose-100 text-rose-700",
+    hover: "hover:bg-rose-50",
   },
   amber: {
     border: "border-amber-500",
@@ -83,6 +85,7 @@ const ACCENT = {
     text: "text-amber-700",
     solid: "bg-amber-600",
     badge: "bg-amber-100 text-amber-700",
+    hover: "hover:bg-amber-50",
   },
   violet: {
     border: "border-violet-500",
@@ -90,6 +93,7 @@ const ACCENT = {
     text: "text-violet-700",
     solid: "bg-violet-600",
     badge: "bg-violet-100 text-violet-700",
+    hover: "hover:bg-violet-50",
   },
   sky: {
     border: "border-sky-500",
@@ -97,6 +101,7 @@ const ACCENT = {
     text: "text-sky-700",
     solid: "bg-sky-600",
     badge: "bg-sky-100 text-sky-700",
+    hover: "hover:bg-sky-50",
   },
   coral: {
     border: "border-orange-500",
@@ -104,6 +109,7 @@ const ACCENT = {
     text: "text-orange-700",
     solid: "bg-orange-600",
     badge: "bg-orange-100 text-orange-700",
+    hover: "hover:bg-orange-50",
   },
 };
 
@@ -147,33 +153,47 @@ export default function PediatricTidalVolumeCalculator() {
   const lowWeightWarning = isValid && weightNum < 3;
 
   return (
-    <div dir="rtl" className="min-h-screen bg-slate-50 text-slate-800">
-      {/* Header */}
-      <div className="bg-gradient-to-l from-sky-600 to-teal-700 rounded-lg text-white">
-        <div className="max-w-5xl mx-auto px-6 py-9">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="bg-white/15 p-2.5 rounded-xl">
-              <LuBaby size={24} />
+    <div
+      dir="rtl"
+      className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100/80 text-slate-800"
+    >
+      {/* Header - کاملاً ریسپانسیو */}
+      <div className="bg-gradient-to-l from-sky-600 to-teal-700 rounded-b-[2rem] md:rounded-b-[3rem] shadow-xl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 lg:py-16">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-4">
+            <div className="flex items-center gap-3">
+              <div className="bg-white/15 p-3 rounded-2xl backdrop-blur-sm">
+                <LuBaby size={28} className="text-white" />
+              </div>
+              <span className="text-sky-100 text-xs sm:text-sm font-medium tracking-wide">
+                محاسبه‌گر ونتیلاتور اطفال
+                <span className="hidden sm:inline"> · مبتنی بر PALICC</span>
+              </span>
             </div>
-            <span className="text-sky-100 text-sm font-medium tracking-wide">
-              محاسبه‌گر ونتیلاتور اطفال · مبتنی بر PALICC
-            </span>
           </div>
-          <h1 className="text-3xl font-bold mb-3">حجم جاری در کودکان</h1>
-          <div className="bg-white/10 rounded-xl px-4 py-3.5 font-mono text-xs sm:text-sm text-sky-50 break-words">
+
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 leading-tight">
+            حجم جاری در کودکان
+          </h1>
+
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-4 sm:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm text-sky-50 break-words max-w-full">
             V<sub>T</sub> = وزن واقعی (kg) × mL/kg اختصاصی بیماری
           </div>
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 py-10 space-y-8">
-        {/* چرا وزن واقعی */}
-        <section className="bg-white rounded-2xl border border-slate-200 p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <LuFlaskConical className="text-sky-600" size={20} />
-            <h2 className="text-lg font-bold">تفاوت کلیدی با بزرگسال</h2>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-8">
+        {/* توضیح - ریسپانسیو */}
+        <section className="bg-white/80 backdrop-blur-sm rounded-3xl border border-slate-200/60 shadow-lg p-6 md:p-8">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2 bg-sky-50 rounded-xl">
+              <LuFlaskConical className="text-sky-600" size={22} />
+            </div>
+            <h2 className="text-lg md:text-xl font-bold">
+              تفاوت کلیدی با بزرگسال
+            </h2>
           </div>
-          <p className="leading-8 text-slate-600">
+          <p className="leading-relaxed md:leading-8 text-slate-600 text-sm md:text-base">
             در بزرگسالان VT بر مبنای{" "}
             <span className="font-semibold text-slate-800">
               وزن بدن ایده‌آل (PBW)
@@ -187,15 +207,19 @@ export default function PediatricTidalVolumeCalculator() {
           </p>
         </section>
 
-        <div className="grid lg:grid-cols-5 gap-6">
+        <div className="grid lg:grid-cols-5 gap-6 md:gap-8">
           {/* فرم ورودی */}
           <div className="lg:col-span-3 space-y-6">
-            <section className="bg-white rounded-2xl border border-slate-200 p-6">
-              <h2 className="flex items-center gap-2 text-base font-bold mb-5">
-                <LuCalendarDays size={18} className="text-sky-600" />
+            {/* اطلاعات بیمار */}
+            <section className="bg-white/80 backdrop-blur-sm rounded-3xl border border-slate-200/60 shadow-lg p-6 md:p-8">
+              <h2 className="flex items-center gap-3 text-base md:text-lg font-bold mb-6">
+                <div className="p-2 bg-sky-50 rounded-xl">
+                  <LuCalendarDays size={20} className="text-sky-600" />
+                </div>
                 اطلاعات بیمار
               </h2>
-              <div className="grid sm:grid-cols-2 gap-5">
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
                   <label className="text-sm font-medium text-slate-600 mb-2 block">
                     وزن (کیلوگرم)
@@ -206,9 +230,10 @@ export default function PediatricTidalVolumeCalculator() {
                     value={weight}
                     onChange={(e) => setWeight(e.target.value)}
                     placeholder="مثلاً ۱۲.۵"
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all"
                   />
                 </div>
+
                 <div>
                   <label className="text-sm font-medium text-slate-600 mb-2 block">
                     PEEP فعلی (cmH2O)
@@ -217,27 +242,28 @@ export default function PediatricTidalVolumeCalculator() {
                     type="number"
                     value={peep}
                     onChange={(e) => setPeep(Number(e.target.value) || 0)}
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all"
                   />
                 </div>
+
                 <div className="sm:col-span-2">
                   <label className="text-sm font-medium text-slate-600 mb-2 block">
                     سن
                   </label>
-                  <div className="flex gap-2">
+                  <div className="flex flex-col sm:flex-row gap-3">
                     <input
                       type="number"
                       value={ageValue}
                       onChange={(e) => setAgeValue(e.target.value)}
                       placeholder="عدد سن"
-                      className="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                      className="flex-1 px-4 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all"
                     />
-                    <div className="flex rounded-xl overflow-hidden border border-slate-200">
+                    <div className="flex rounded-2xl overflow-hidden border border-slate-200 shrink-0">
                       {["روز", "ماه", "سال"].map((u) => (
                         <button
                           key={u}
                           onClick={() => setAgeUnit(u)}
-                          className={`px-4 text-sm font-medium transition ${
+                          className={`px-4 sm:px-5 py-3 text-sm font-medium transition-all ${
                             ageUnit === u
                               ? "bg-slate-800 text-white"
                               : "bg-white text-slate-500 hover:bg-slate-50"
@@ -249,20 +275,27 @@ export default function PediatricTidalVolumeCalculator() {
                     </div>
                   </div>
                   {ageGroup && (
-                    <p className="text-xs text-slate-500 mt-2">
-                      رده‌ی سنی: <span className="font-medium">{ageGroup}</span>
+                    <p className="text-xs text-slate-500 mt-3">
+                      رده‌ی سنی:{" "}
+                      <span className="font-medium text-slate-700">
+                        {ageGroup}
+                      </span>
                     </p>
                   )}
                 </div>
               </div>
             </section>
 
-            <section className="bg-white rounded-2xl border border-slate-200 p-6">
-              <h2 className="flex items-center gap-2 text-base font-bold mb-5">
-                <LuStethoscope size={18} className="text-sky-600" />
+            {/* بالینی */}
+            <section className="bg-white/80 backdrop-blur-sm rounded-3xl border border-slate-200/60 shadow-lg p-6 md:p-8">
+              <h2 className="flex items-center gap-3 text-base md:text-lg font-bold mb-6">
+                <div className="p-2 bg-sky-50 rounded-xl">
+                  <LuStethoscope size={20} className="text-sky-600" />
+                </div>
                 بالینی
               </h2>
-              <div className="space-y-2.5">
+
+              <div className="grid grid-cols-1 gap-3">
                 {DISEASES.map((d) => {
                   const a = ACCENT[d.accent];
                   const active = d.id === diseaseId;
@@ -270,24 +303,24 @@ export default function PediatricTidalVolumeCalculator() {
                     <button
                       key={d.id}
                       onClick={() => setDiseaseId(d.id)}
-                      className={`w-full text-right p-4 rounded-xl border-2 transition flex items-center justify-between gap-4 ${
+                      className={`w-full text-right p-4 rounded-2xl border-2 transition-all duration-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 ${
                         active
-                          ? `${a.border} ${a.bg}`
-                          : "border-slate-100 hover:border-slate-200"
+                          ? `${a.border} ${a.bg} shadow-sm`
+                          : "border-slate-100 hover:border-slate-200 hover:bg-slate-50/50"
                       }`}
                     >
-                      <div>
+                      <div className="flex-1 min-w-0">
                         <div
-                          className={`font-semibold text-sm ${active ? a.text : "text-slate-800"}`}
+                          className={`font-semibold text-sm md:text-base ${active ? a.text : "text-slate-800"}`}
                         >
                           {d.label}
                         </div>
-                        <div className="text-xs text-slate-500 mt-1">
+                        <div className="text-xs text-slate-500 mt-1 line-clamp-2">
                           {d.desc}
                         </div>
                       </div>
                       <span
-                        className={`shrink-0 text-xs font-bold px-2.5 py-1 rounded-lg ${
+                        className={`shrink-0 text-xs font-bold px-3 py-1.5 rounded-xl whitespace-nowrap ${
                           active ? a.badge : "bg-slate-100 text-slate-500"
                         }`}
                       >
@@ -303,45 +336,58 @@ export default function PediatricTidalVolumeCalculator() {
           {/* پنل نتیجه */}
           <div className="lg:col-span-2">
             <div className="lg:sticky lg:top-6 space-y-4">
-              <section className={`rounded-2xl p-6 text-white ${accent.solid}`}>
+              <section
+                className={`rounded-3xl p-6 md:p-8 text-white shadow-xl ${accent.solid}`}
+              >
                 <div className="flex items-center gap-2 mb-4 opacity-90">
-                  <LuGauge size={18} />
+                  <LuGauge size={20} />
                   <span className="text-sm font-medium">حجم جاری پیشنهادی</span>
                 </div>
+
                 {result ? (
                   <>
-                    <div className="text-4xl font-bold mb-1">
+                    <div className="text-3xl sm:text-4xl font-bold mb-1">
                       {result.low} – {result.high}
-                      <span className="text-lg font-normal mr-1">mL</span>
+                      <span className="text-base sm:text-lg font-normal mr-1">
+                        mL
+                      </span>
                     </div>
                     <div className="text-sm opacity-90 mb-4">
                       مقدار میانه : {result.mid} mL
                     </div>
                     <div className="h-px bg-white/20 my-4" />
-                    <div className="text-sm opacity-90 leading-6 mb-3">
+                    <div className="text-sm opacity-90 leading-6 mb-4">
                       {weightNum} کیلوگرم × {disease.range[0]} تا{" "}
                       {disease.range[1]} mL/kg
                     </div>
-                    <div className="bg-white/10 rounded-xl px-3 py-3 text-xs">
-                      سقف Pplateau هدف:
-                      <span className="font-bold">
-                        {disease.plateauMax} cmH2O
-                      </span>
-                      <br />
-                      <br />
-                      حداکثر Driving Pressure قابل‌قبول با این PEEP:{" "}
-                      <span className="font-bold">{result.dpMax} cmH2O</span>
+                    <div className="bg-white/10 rounded-2xl px-4 py-4 text-xs md:text-sm">
+                      <div className="flex flex-col gap-1">
+                        <div>
+                          سقف Pplateau هدف:{" "}
+                          <span className="font-bold">
+                            {disease.plateauMax} cmH2O
+                          </span>
+                        </div>
+                        <div>
+                          حداکثر Driving Pressure قابل‌قبول با این PEEP:{" "}
+                          <span className="font-bold">
+                            {result.dpMax} cmH2O
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </>
                 ) : (
-                  <div className="text-sm opacity-90 py-4">
-                    برای مشاهده‌ی نتیجه، وزن بیمار را وارد کنید.
+                  <div className="text-sm opacity-90 py-6 text-center">
+                    برای مشاهده‌ی نتیجه،
+                    <br />
+                    وزن بیمار را وارد کنید.
                   </div>
                 )}
               </section>
 
               {lowWeightWarning && (
-                <section className="bg-amber-50 border border-amber-200 rounded-2xl p-5">
+                <section className="bg-amber-50/80 backdrop-blur-sm border border-amber-200 rounded-3xl p-5 shadow-lg">
                   <div className="flex items-center gap-2 mb-2">
                     <LuTriangleAlert className="text-amber-600" size={18} />
                     <h3 className="font-bold text-sm text-amber-900">
@@ -356,7 +402,7 @@ export default function PediatricTidalVolumeCalculator() {
                 </section>
               )}
 
-              <section className="bg-white border border-slate-200 rounded-2xl p-5">
+              <section className="bg-white/80 backdrop-blur-sm border border-slate-200/60 rounded-3xl p-5 shadow-lg">
                 <div className="flex items-center gap-2 mb-2">
                   <LuBookOpen className="text-slate-400" size={18} />
                   <h3 className="font-bold text-sm text-slate-700">مرجع</h3>
@@ -371,13 +417,17 @@ export default function PediatricTidalVolumeCalculator() {
           </div>
         </div>
 
-        {/* نکته کلیدی */}
-        <section className="bg-slate-800 rounded-2xl p-6 text-white">
-          <div className="flex items-center gap-2 mb-3">
-            <LuStethoscope size={20} className="text-sky-400" />
-            <h2 className="text-lg font-bold">نکته‌ی کلیدی برای فراگیر</h2>
+        {/* نکته کلیدی - ریسپانسیو */}
+        <section className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-6 md:p-8 text-white shadow-xl">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2 bg-sky-500/20 rounded-xl">
+              <LuStethoscope size={22} className="text-sky-400" />
+            </div>
+            <h2 className="text-lg md:text-xl font-bold">
+              نکته‌ی کلیدی برای فراگیر
+            </h2>
           </div>
-          <p className="text-sm leading-7 text-slate-200">
+          <p className="text-sm md:text-base leading-relaxed md:leading-7 text-slate-200">
             برخلاف بزرگسالان که آستانه‌ی Pplateau ثابت (۳۰ cmH2O) دارند، PALICC
             در اطفال یک{" "}
             <span className="font-semibold text-white">آستانه‌ی متغیر</span> بر
