@@ -276,7 +276,7 @@ const menu = [
   },
   {
     title: "تفسیر ABG",
-    href: "/ventilatortraining",
+    href: "/ventilatortraining/abg",
     icon: <FaFlask size={16} />,
     children: [{ title: "تفسیر ABG", href: "/ventilatortraining/abg" }],
   },
@@ -450,7 +450,7 @@ function SubMenuItem({ item, pathname }) {
         <div
           id={panelId}
           className={`overflow-hidden transition-all duration-300 ease-in-out ${
-            open ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
+            open ? "max-h-250 opacity-100" : "max-h-0 opacity-0"
           }`}
         >
           <ul className="mr-4 mt-1 space-y-1 border-r-2 border-slate-100 pr-3">
