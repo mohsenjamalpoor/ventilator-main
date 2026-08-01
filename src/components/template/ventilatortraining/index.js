@@ -133,16 +133,16 @@ const menu = [
         href: "/ventilatortraining/medicine/nmba",
         children: [
           {
+            title: "Atracurium",
+            href: "/ventilatortraining/medicine/nmba/atracurium",
+          },
+          {
             title: "Rocuronium",
             href: "/ventilatortraining/medicine/nmba/rocuronium",
           },
           {
             title: "Vecuronium",
             href: "/ventilatortraining/medicine/nmba/vecuronium",
-          },
-          {
-            title: "Atracurium",
-            href: "/ventilatortraining/medicine/nmba/atracurium",
           },
         ],
       },
@@ -154,6 +154,10 @@ const menu = [
             title: "Inotropes",
             href: "/ventilatortraining/medicine/cardiovascular/inotropes",
             children: [
+              {
+                title: "Epinephrine",
+                href: "/ventilatortraining/medicine/cardiovascular/vasopressors/epinephrine",
+              },
               {
                 title: "Dopamine",
                 href: "/ventilatortraining/medicine/cardiovascular/inotropes/dopamine",
