@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { LuActivity } from "react-icons/lu";
+import { useState, useMemo } from "react";
+import { LuActivity, LuStethoscope, LuTriangleAlert } from "react-icons/lu";
 
 const COLOR = "#A78BFA";
+const COLOR_WARN = "#F87171";
 const VIEWBOX = "0 0 300 300";
 
 const SCENARIOS = [
@@ -18,10 +19,13 @@ const VARIANTS = {
     inspPath: "M45,235 C95,255 150,225 190,185 C222,153 240,115 250,85",
     expPath: "M250,85 C225,140 165,190 105,212 C75,222 55,230 45,235",
     readouts: [
-      { label: "Compliance", value: "45", unit: "ml/cmH2O" },
+      { label: "Static Compliance", value: "45", unit: "ml/cmH2O" },
       { label: "Loop", value: "بسته", unit: "" },
     ],
-    note: "لوپ کاملاً بسته با Hysteresis طبیعی بین دم و بازدم.",
+    uip: null,
+    note: "لوپ کاملاً بسته با Hysteresis طبیعی بین دم و بازدم؛ بخش میانی لوپ خطی است — یعنی در تمام محدوده‌ی Vt جاری، ریه در ناحیه‌ی کمپلیانس مطلوب کار می‌کند.",
+    pearl:
+      "شیب بخش میانی لوپ، Compliance دینامیک است؛ برای Compliance استاتیک باید مکث دمی اعمال و Pplateau خوانده شود.",
   },
   leak: {
     inspPath: "M45,235 C95,255 150,225 190,185 C222,153 240,115 250,85",
@@ -30,16 +34,22 @@ const VARIANTS = {
       { label: "Compliance", value: "نامعتبر", unit: "" },
       { label: "Loop", value: "باز", unit: "" },
     ],
+    uip: null,
     note: "لوپ بسته نمی‌شود — نقطه‌ی پایان بازدم به نقطه‌ی شروع دم بازنمی‌گردد. این شکاف، امضای کلاسیک نشتی روی لوپ PV است.",
+    pearl:
+      "در اطفال با لوله‌ی بدون کاف، درصد نشتی طبیعی وجود دارد؛ لوپ باز به‌تنهایی پاتولوژیک نیست — همیشه با درصد نشتی نمایش‌داده‌شده روی دستگاه تطبیق دهید.",
   },
   obstruction: {
     inspPath: "M45,235 C100,258 155,220 195,175 C222,145 235,110 245,80",
     expPath: "M245,80 C215,150 155,200 95,220 C70,228 55,232 45,235",
     readouts: [
-      { label: "Resistance", value: "افزایش‌یافته", unit: "" },
-      { label: "Loop", value: "پهن‌تر", unit: "" },
+      { label: "Airway Resistance", value: "افزایش‌یافته", unit: "" },
+      { label: "Loop Width", value: "پهن‌تر", unit: "" },
     ],
-    note: "پهن‌ترشدن لوپ و افزایش Hysteresis به‌علت افزایش مقاومت راه هوایی.",
+    uip: null,
+    note: "پهن‌ترشدن لوپ در محور فشار (نه حجم) و افزایش Hysteresis؛ فاصله‌ی افقی بین منحنی دم و بازدم در هر سطح از حجم، معیار کمّی مقاومت راه هوایی است.",
+    pearl:
+      "برخلاف بیش‌اتساعی که شکل لوپ را در بالای منحنی تغییر می‌دهد، انسداد کل عرض لوپ را به‌طور یکنواخت پهن می‌کند.",
   },
   overdistension: {
     inspPath:
@@ -47,18 +57,33 @@ const VARIANTS = {
     expPath:
       "M250,85 C230,95 222,105 220,118 C215,145 200,175 165,198 C120,222 80,228 45,235",
     readouts: [
-      { label: "Compliance", value: "کاهش‌یافته", unit: "" },
+      { label: "Compliance (بالای UIP)", value: "کاهش‌یافته", unit: "" },
       { label: "Beak Sign", value: "مثبت", unit: "" },
     ],
-    note: "صاف‌شدگی و 'نوک اردکی' (Beak) در بالای لوپ، نشانه‌ی بیش‌اتساع آلوئولی است.",
+    uip: { x: 220, y: 118 },
+    note: "بعد از نقطه‌ی عطف بالایی (UIP)، شیب لوپ به‌وضوح کاهش می‌یابد — یعنی برای افزایش کوچکی در حجم، فشار به‌شدت بالا می‌رود. این همان 'نوک اردکی' (Beak) است.",
+    pearl:
+      "در نوزادان و شیرخواران به‌دلیل ظرفیت باقیمانده عملکردی (FRC) کوچک‌تر، فاصله بین حجم طبیعی و UIP کمتر است — یعنی با تنظیمات نسبتاً معمولی هم سریع‌تر به Overdistension می‌رسند.",
   },
 };
 
 const CLINICAL = [
-  "تنظیم PEEP",
-  "تشخیص Overdistension",
-  "Recruitment",
-  "Compliance",
+  {
+    label: "تنظیم PEEP بهینه",
+    desc: "PEEP باید بالای نقطه‌ی عطف پایینی (LIP) روی منحنی دمی تنظیم شود تا از باز و بسته‌شدن مکرر آلوئول جلوگیری کند.",
+  },
+  {
+    label: "تشخیص Overdistension",
+    desc: "ظهور Beak روی بخش بالایی لوپ نشانه‌ی نیاز به کاهش Vt یا PEEP است، حتی اگر Pplateau هنوز زیر آستانه باشد.",
+  },
+  {
+    label: "استراتژی Recruitment",
+    desc: "لوپ می‌تواند پیش و پس از یک مانور رکروتمنت مقایسه شود تا پاسخ‌دهی آلوئولی ارزیابی شود.",
+  },
+  {
+    label: "پایش Compliance روند",
+    desc: "کاهش تدریجی شیب لوپ در طول زمان، حتی بدون تغییر تنظیمات، می‌تواند اولین نشانه‌ی وخامت ریوی باشد.",
+  },
 ];
 
 function stripLeadingMove(d) {
@@ -157,9 +182,40 @@ function PVLoopChart({ variant, scenarioKey }) {
               cx={inspStart[1]}
               cy={inspStart[2]}
               r="4"
-              fill="#F87171"
+              fill={COLOR_WARN}
               opacity="0.9"
             />
+          )}
+
+          {variant.uip && (
+            <g>
+              <circle
+                cx={variant.uip.x}
+                cy={variant.uip.y}
+                r="5"
+                fill="none"
+                stroke={COLOR_WARN}
+                strokeWidth="2"
+              />
+              <line
+                x1={variant.uip.x}
+                y1={variant.uip.y}
+                x2={variant.uip.x + 22}
+                y2={variant.uip.y - 22}
+                stroke={COLOR_WARN}
+                strokeWidth="1"
+                strokeDasharray="2 3"
+              />
+              <text
+                x={variant.uip.x + 26}
+                y={variant.uip.y - 24}
+                fill={COLOR_WARN}
+                fontSize="11"
+                fontFamily="monospace"
+              >
+                UIP
+              </text>
+            </g>
           )}
 
           <circle r="5" fill={COLOR} filter="url(#pvloop-glow)">
@@ -264,9 +320,10 @@ export default function PressureVolumeLoopPage() {
             </div>
           </div>
 
-          <p className="mt-6 text-lg leading-9 text-slate-400">
-            لوپ Pressure-Volume رابطه بین فشار و حجم را نشان می‌دهد و برای تنظیم
-            مناسب PEEP و تشخیص Overdistension استفاده می‌شود.
+          <p className="mt-6 text-base leading-8 text-slate-400">
+            لوپ Pressure-Volume رابطه‌ی بین فشار راه هوایی و حجم ریوی را در طول
+            یک سیکل کامل تنفسی نشان می‌دهد. شیب لوپ در هر نقطه، Compliance
+            لحظه‌ای ریه است — نه یک عدد ثابت.
           </p>
 
           <div className="mt-6 flex flex-wrap gap-2 border-t border-slate-800/80 pt-5">
@@ -299,6 +356,18 @@ export default function PressureVolumeLoopPage() {
           >
             {variant.note}
           </div>
+
+          <div
+            className="mt-3 flex gap-2.5 rounded-xl border px-4 py-3 text-xs leading-6"
+            style={{
+              borderColor: `${COLOR_WARN}33`,
+              backgroundColor: `${COLOR_WARN}0D`,
+              color: "#FCA5A5",
+            }}
+          >
+            <LuStethoscope size={16} className="mt-0.5 shrink-0" />
+            <span>{variant.pearl}</span>
+          </div>
         </div>
 
         <PVLoopChart key={scenario} variant={variant} scenarioKey={scenario} />
@@ -310,17 +379,38 @@ export default function PressureVolumeLoopPage() {
           <div className="grid gap-3 md:grid-cols-2">
             {CLINICAL.map((c) => (
               <div
-                key={c}
-                className="flex items-center gap-3 rounded-2xl border border-slate-800 bg-black/20 p-4"
+                key={c.label}
+                className="rounded-2xl border border-slate-800 bg-black/20 p-4"
               >
-                <span
-                  className="h-2 w-2 shrink-0 rounded-full"
-                  style={{ backgroundColor: COLOR }}
-                />
-                <span className="text-slate-300">{c}</span>
+                <div className="mb-1.5 flex items-center gap-2.5">
+                  <span
+                    className="h-2 w-2 shrink-0 rounded-full"
+                    style={{ backgroundColor: COLOR }}
+                  />
+                  <span className="font-semibold text-slate-200">
+                    {c.label}
+                  </span>
+                </div>
+                <p className="text-xs leading-6 text-slate-500">{c.desc}</p>
               </div>
             ))}
           </div>
+        </div>
+
+        <div
+          className="flex items-start gap-3 rounded-2xl border px-5 py-4 text-xs leading-6"
+          style={{
+            borderColor: "rgba(251,191,36,0.25)",
+            backgroundColor: "rgba(251,191,36,0.06)",
+            color: "#FCD34D",
+          }}
+        >
+          <LuTriangleAlert size={16} className="mt-0.5 shrink-0" />
+          <span>
+            نقطه‌ی عطف بالایی (UIP) روی این نمایش برای اهداف آموزشی ثابت شده
+            است. در بیمار واقعی، UIP به‌صورت پویا با هر تغییر Vt یا PEEP جابه‌جا
+            می‌شود و نباید به‌عنوان یک عدد ثابت حفظ شود.
+          </span>
         </div>
       </div>
     </div>

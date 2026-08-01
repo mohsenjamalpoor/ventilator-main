@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { LuChartLine } from "react-icons/lu";
+import { useState, useMemo } from "react";
+import { LuChartLine, LuStethoscope, LuTriangleAlert } from "react-icons/lu";
 
 const COLOR = "#FBBF24";
+const COLOR_WARN = "#F87171";
 const VIEWBOX = "0 0 600 220";
 const CYCLE_WIDTH = 300;
 const BASELINE_Y = 180;
@@ -17,33 +18,44 @@ const SCENARIOS = [
 const VARIANTS = {
   normal: {
     path: "M0,180 C20,180 50,70 90,55 L170,52 C185,52 190,60 195,75 C220,140 250,175 280,180 L300,180",
-    readouts: [
-      { label: "Tidal Volume", value: "450", unit: "ml" },
-      { label: "Minute Volume", value: "6.3", unit: "L" },
-    ],
-    note: "بازگشت کامل حجم به خط پایه‌ی صفر پس از هر بازدم.",
+    setVt: 450,
+    exhaledVt: 450,
+    note: "بازگشت کامل حجم به خط پایه‌ی صفر پس از هر بازدم — پیش‌شرط اعتماد به اعداد Vt نمایش‌داده‌شده روی دستگاه.",
+    pearl:
+      "در اطفال با لوله‌ی بدون کاف، نشتی صفر می‌تواند نشانه‌ی فشردگی بیش‌ازحد لوله به دیواره‌ی نای باشد — بی‌خطرترین حالت همیشه نشتی صفر نیست.",
   },
   leak: {
     path: "M0,160 C20,160 50,62 90,50 L170,48 C183,48 188,55 193,68 C213,105 240,140 265,155 L300,160",
-    readouts: [
-      { label: "Exhaled Vt", value: "380", unit: "ml" },
-      { label: "Set Vt", value: "450", unit: "ml" },
-      { label: "Diff", value: "-70", unit: "ml" },
-    ],
-    note: "حجم بازدمی هرگز به صفر بازنمی‌گردد؛ اختلاف حجم دمی و بازدمی نشانه‌ی نشتی است.",
+    setVt: 450,
+    exhaledVt: 380,
+    note: "حجم بازدمی هرگز به صفر بازنمی‌گردد؛ اختلاف بین حجم دمی و بازدمی نشانه‌ی نشتی مدار یا دور لوله‌ی تراشه است.",
+    pearl:
+      "نشتی زیر ۱۰٪ معمولاً بالینی بی‌اهمیت است؛ بین ۱۰-۲۰٪ پایش نزدیک لازم است؛ بالای ۲۰٪ اعتبار اعداد Vt و کاپنوگرافی را زیر سؤال می‌برد.",
   },
   obstruction: {
     path: "M0,172 C20,172 50,66 90,52 L170,50 C184,50 189,57 194,71 C216,120 246,158 272,168 L300,172",
-    readouts: [
-      { label: "Exhaled Vt", value: "430", unit: "ml" },
-      { label: "Set Vt", value: "450", unit: "ml" },
-      { label: "Diff", value: "-20", unit: "ml" },
-    ],
-    note: "بازگشت ناقص حجم به دلیل بازدم ناکامل و احتباس هوا (Air Trapping).",
+    setVt: 450,
+    exhaledVt: 430,
+    note: "بازگشت ناقص حجم به خط پایه به‌دلیل بازدم ناکامل و احتباس هوا (Air Trapping)؛ برخلاف نشتی، این‌جا Exhaled Vt کمتر از Set Vt است نه بیشتر.",
+    pearl:
+      "تفاوت کلیدی با نشتی: در Air Trapping، خط پایه‌ی بعدی از صفر واقعی شروع می‌شود (یعنی Auto-PEEP)، نه اینکه خودِ منحنی به صفر نرسد.",
   },
 };
 
-const CLINICAL = ["تشخیص Leak", "بررسی Tidal Volume", "کنترل بازدم کامل"];
+const CLINICAL = [
+  {
+    label: "تشخیص و تیتراسیون نشتی",
+    desc: "درصد نشتی معیار بهتری از عدد خام میلی‌لیتری برای تصمیم بالینی است.",
+  },
+  {
+    label: "تأیید Vt واقعی رسیده به بیمار",
+    desc: "عدد تنظیم‌شده روی دستگاه همیشه با عدد بازدمی واقعی یکسان نیست.",
+  },
+  {
+    label: "غربالگری Air Trapping",
+    desc: "عدم بازگشت به خط پایه، نشانه‌ی زودهنگام Auto-PEEP پیش از تغییر در فشار است.",
+  },
+];
 
 function VolumeTimeChart({ variant }) {
   return (
@@ -181,6 +193,20 @@ export default function VolumeTimePage() {
   const [scenario, setScenario] = useState("normal");
   const variant = VARIANTS[scenario];
 
+  const leakPercent = useMemo(
+    () =>
+      Math.round(((variant.setVt - variant.exhaledVt) / variant.setVt) * 100),
+    [variant],
+  );
+
+  const leakStatus = useMemo(() => {
+    if (scenario !== "leak") return null;
+    if (leakPercent >= 20)
+      return { label: "نیازمند مداخله", color: COLOR_WARN };
+    if (leakPercent >= 10) return { label: "پایش نزدیک", color: COLOR };
+    return { label: "بی‌اهمیت بالینی", color: "#4ADE80" };
+  }, [scenario, leakPercent]);
+
   return (
     <div dir="rtl" className="min-h-screen px-4 py-8">
       <div className="mx-auto max-w-4xl space-y-6">
@@ -203,31 +229,50 @@ export default function VolumeTimePage() {
             </div>
 
             <div className="flex flex-wrap gap-3">
-              {variant.readouts.map((r) => (
+              <div className="rounded-xl border border-slate-800 bg-black/30 px-4 py-2 text-center">
+                <div className="font-mono text-[10px] text-slate-500">
+                  Set Vt
+                </div>
                 <div
-                  key={r.label}
-                  className="rounded-xl border border-slate-800 bg-black/30 px-4 py-2 text-center"
+                  className="font-mono text-xl font-bold leading-tight"
+                  style={{ color: COLOR }}
                 >
+                  {variant.setVt}
+                  <span className="mr-1 text-xs text-slate-500">ml</span>
+                </div>
+              </div>
+              <div className="rounded-xl border border-slate-800 bg-black/30 px-4 py-2 text-center">
+                <div className="font-mono text-[10px] text-slate-500">
+                  Exhaled Vt
+                </div>
+                <div
+                  className="font-mono text-xl font-bold leading-tight"
+                  style={{ color: COLOR }}
+                >
+                  {variant.exhaledVt}
+                  <span className="mr-1 text-xs text-slate-500">ml</span>
+                </div>
+              </div>
+              {leakStatus && (
+                <div className="rounded-xl border border-slate-800 bg-black/30 px-4 py-2 text-center">
                   <div className="font-mono text-[10px] text-slate-500">
-                    {r.label}
+                    درصد نشتی
                   </div>
                   <div
                     className="font-mono text-xl font-bold leading-tight"
-                    style={{ color: COLOR }}
+                    style={{ color: leakStatus.color }}
                   >
-                    {r.value}
-                    <span className="mr-1 text-xs text-slate-500">
-                      {r.unit}
-                    </span>
+                    {leakPercent}%
                   </div>
                 </div>
-              ))}
+              )}
             </div>
           </div>
 
-          <p className="mt-6 text-lg leading-9 text-slate-400">
-            این موج حجم جاری را در طول دم و بازدم نمایش می‌دهد و برای بررسی نشتی
-            مدار و برگشت کامل حجم به صفر استفاده می‌شود.
+          <p className="mt-6 text-base leading-8 text-slate-400">
+            این موج حجم جاری را در طول دم و بازدم نمایش می‌دهد. معیار اصلی تفسیر
+            آن، بازگشت یا عدم بازگشت منحنی به خط پایه‌ی صفر است — نه صرفاً
+            ارتفاع پیک آن.
           </p>
 
           <div className="mt-6 flex flex-wrap gap-2 border-t border-slate-800/80 pt-5">
@@ -260,6 +305,18 @@ export default function VolumeTimePage() {
           >
             {variant.note}
           </div>
+
+          <div
+            className="mt-3 flex gap-2.5 rounded-xl border px-4 py-3 text-xs leading-6"
+            style={{
+              borderColor: `${COLOR_WARN}33`,
+              backgroundColor: `${COLOR_WARN}0D`,
+              color: "#FCA5A5",
+            }}
+          >
+            <LuStethoscope size={16} className="mt-0.5 shrink-0" />
+            <span>{variant.pearl}</span>
+          </div>
         </div>
 
         <VolumeTimeChart key={scenario} variant={variant} />
@@ -271,17 +328,38 @@ export default function VolumeTimePage() {
           <div className="grid gap-3 md:grid-cols-2">
             {CLINICAL.map((c) => (
               <div
-                key={c}
-                className="flex items-center gap-3 rounded-2xl border border-slate-800 bg-black/20 p-4"
+                key={c.label}
+                className="rounded-2xl border border-slate-800 bg-black/20 p-4"
               >
-                <span
-                  className="h-2 w-2 shrink-0 rounded-full"
-                  style={{ backgroundColor: COLOR }}
-                />
-                <span className="text-slate-300">{c}</span>
+                <div className="mb-1.5 flex items-center gap-2.5">
+                  <span
+                    className="h-2 w-2 shrink-0 rounded-full"
+                    style={{ backgroundColor: COLOR }}
+                  />
+                  <span className="font-semibold text-slate-200">
+                    {c.label}
+                  </span>
+                </div>
+                <p className="text-xs leading-6 text-slate-500">{c.desc}</p>
               </div>
             ))}
           </div>
+        </div>
+
+        <div
+          className="flex items-start gap-3 rounded-2xl border px-5 py-4 text-xs leading-6"
+          style={{
+            borderColor: "rgba(251,191,36,0.25)",
+            backgroundColor: "rgba(251,191,36,0.06)",
+            color: "#FCD34D",
+          }}
+        >
+          <LuTriangleAlert size={16} className="mt-0.5 shrink-0" />
+          <span>
+            در تهویه‌ی حجمی (Volume Control)، حجم دمی همیشه ثابت است؛ فقط حجم
+            بازدمی می‌تواند بین سیکل‌ها متغیر باشد. در تهویه‌ی فشاری، هر دو
+            منحنی دمی و بازدمی می‌توانند سیکل‌به‌سیکل نوسان کنند.
+          </span>
         </div>
       </div>
     </div>
