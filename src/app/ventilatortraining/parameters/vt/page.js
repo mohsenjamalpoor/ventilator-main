@@ -157,8 +157,8 @@ export default function PediatricTidalVolumeCalculator() {
       dir="rtl"
       className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100/80 text-slate-800"
     >
-      {/* Header - کاملاً ریسپانسیو */}
-      <div className="bg-gradient-to-l from-sky-600 to-teal-700 rounded-b-[2rem] md:rounded-b-[3rem] shadow-xl">
+      {/* Header */}
+      <div className="bg-gradient-to-l from-sky-600 to-teal-700 rounded-[2rem] md:rounded-[3rem] shadow-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 lg:py-16">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-4">
             <div className="flex items-center gap-3">
@@ -166,18 +166,15 @@ export default function PediatricTidalVolumeCalculator() {
                 <LuBaby size={28} className="text-white" />
               </div>
               <span className="text-sky-100 text-xs sm:text-sm font-medium tracking-wide">
-                محاسبه‌گر ونتیلاتور اطفال
-                <span className="hidden sm:inline"> · مبتنی بر PALICC</span>
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 leading-tight">
+                  حجم جاری در کودکان
+                </h1>
               </span>
             </div>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 leading-tight">
-            حجم جاری در کودکان
-          </h1>
-
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-4 sm:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm text-sky-50 break-words max-w-full">
-            V<sub>T</sub> = وزن واقعی (kg) × mL/kg اختصاصی بیماری
+            V<sub>T</sub> = وزن (kg) × mL/kg اختصاصی بیماری
           </div>
         </div>
       </div>
