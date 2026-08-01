@@ -8,8 +8,10 @@ import {
   FaLungs,
   FaWaveSquare,
   FaChevronDown,
+  FaQuestionCircle,
 } from "react-icons/fa";
 import { LuSyringe } from "react-icons/lu";
+import { FaFlask } from "react-icons/fa6";
 
 const menu = [
   {
@@ -271,6 +273,18 @@ const menu = [
     href: "/ventilatortraining/alarm",
     icon: <FaBell size={16} />,
     children: [{ title: "لیست آلارم‌ها", href: "/ventilatortraining/alarm" }],
+  },
+  {
+    title: "تفسیر ABG",
+    href: "/ventilatortraining",
+    icon: <FaFlask size={16} />,
+    children: [{ title: "تفسیر ABG", href: "/ventilatortraining/abg" }],
+  },
+  {
+    title: "آزمون",
+    href: "/ventilatortraining/exam",
+    icon: <FaQuestionCircle size={16} />,
+    children: [{ title: "آزمون", href: "/ventilatortraining/exam" }],
   },
 ];
 
